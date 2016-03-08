@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using XboxCtrlrInput;		
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
+
+	public XboxController Xcontroller;
+	private static bool didQueryNumOfCtrlrs = false;
 
 	public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
@@ -29,6 +33,29 @@ public class Player : MonoBehaviour {
 
 	void Start() {
 		controller = GetComponent<Controller2D> ();
+	
+		if(!didQueryNumOfCtrlrs)
+		{
+			didQueryNumOfCtrlrs = true;
+
+			int queriedNumberOfCtrlrs = XCI.GetNumPluggedCtrlrs();
+			if(queriedNumberOfCtrlrs == 1)
+			{
+				Debug.Log("Only " + queriedNumberOfCtrlrs + " Xbox controller plugged in.");
+			}
+			else if (queriedNumberOfCtrlrs == 0)
+			{
+				Debug.Log("No Xbox controllers plugged in!");
+			}
+			else
+			{
+				Debug.Log(queriedNumberOfCtrlrs + " Xbox controllers plugged in.");
+			}
+
+			XCI.DEBUG_LogControllerNames();
+		}
+
+
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
@@ -36,7 +63,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void Update() {
-		Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
+		Vector2 input = new Vector2 (XCI.GetAxisRaw(XboxAxis.LeftStickX, Xcontroller), XCI.GetAxis(XboxAxis.LeftStickY, Xcontroller));
 		int wallDirX = (controller.collisions.left) ? -1 : 1;
 
 		float targetVelocityX = input.x * moveSpeed;
@@ -67,8 +94,8 @@ public class Player : MonoBehaviour {
 
 		}
 
-		if (Input.GetAxis("Vertical") >= 0) {
-			if (Input.GetAxisRaw("Vertical")> 0) {
+		if (XCI.GetButtonDown(XboxButton.A, Xcontroller)) {
+			if (XCI.GetButtonDown(XboxButton.A, Xcontroller)) {
 				if (wallSliding) {
 					if (wallDirX == input.x) {
 						velocity.x = -wallDirX * wallJumpClimb.x;
@@ -87,7 +114,7 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetAxisRaw("Vertical") < 0) {
+		if (XCI.GetButtonUp(XboxButton.A, Xcontroller)) {
 			if (velocity.y > minJumpVelocity) {
 				velocity.y = minJumpVelocity;
 			}
