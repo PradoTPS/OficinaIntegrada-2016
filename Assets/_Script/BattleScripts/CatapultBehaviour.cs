@@ -2,27 +2,24 @@
 using System.Collections;
 
 public class CatapultBehaviour : MonoBehaviour {
-	
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
 	void Update () {
         if (isPressed () == true) {
-			changeMov (false);
+            setCatapult(false);
 		} else {
-			changeMov (true);
+            setCatapult(true);
 		}
     } 
 
-	private void changeMov(bool allow){
+	private void setCatapult(bool allow){
         if (allow == true) {
             gameObject.GetComponent<Player>().enabled = true;
+            gameObject.GetComponentInChildren<AimBehaviour>().enabled = false;
+            gameObject.transform.Find("Player_Aim").GetComponent<SpriteRenderer>().enabled = false;            
         } else {
             gameObject.GetComponent<Player>().enabled = false;
+            gameObject.GetComponentInChildren<AimBehaviour>().enabled = true;
+            gameObject.transform.Find("Player_Aim").GetComponent<SpriteRenderer>().enabled = true;
         }
 	}
 
