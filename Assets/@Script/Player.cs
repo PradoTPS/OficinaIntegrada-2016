@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using XboxCtrlrInput;		
+using XboxCtrlrInput;
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
@@ -70,7 +70,7 @@ public class Player : MonoBehaviour {
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 
 		bool wallSliding = false;
-		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0) {
+		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && !controller.enterPlayersCollision) {
 			wallSliding = true;
 
 			if (velocity.y < -wallSlideSpeedMax) {
