@@ -5,6 +5,7 @@ using XboxCtrlrInput;
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
 
+	public bool isKeyboard = false;
 	public XboxController Xcontroller;
 	private static bool didQueryNumOfCtrlrs = false;
 
@@ -34,28 +35,21 @@ public class Player : MonoBehaviour {
 	void Start() {
 		controller = GetComponent<Controller2D> ();
 	
-		if(!didQueryNumOfCtrlrs)
-		{
+		if(!didQueryNumOfCtrlrs) {
 			didQueryNumOfCtrlrs = true;
-
 			int queriedNumberOfCtrlrs = XCI.GetNumPluggedCtrlrs();
-			if(queriedNumberOfCtrlrs == 1)
-			{
+
+			if(queriedNumberOfCtrlrs == 1) {
 				Debug.Log("Only " + queriedNumberOfCtrlrs + " Xbox controller plugged in.");
-			}
-			else if (queriedNumberOfCtrlrs == 0)
-			{
+			} else if (queriedNumberOfCtrlrs == 0) {
 				Debug.Log("No Xbox controllers plugged in!");
-			}
-			else
-			{
+			} else {
 				Debug.Log(queriedNumberOfCtrlrs + " Xbox controllers plugged in.");
 			}
 
 			XCI.DEBUG_LogControllerNames();
 		}
-
-
+			
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
@@ -63,14 +57,20 @@ public class Player : MonoBehaviour {
 	}
 
 	void Update() {
-		Vector2 input = new Vector2 (XCI.GetAxisRaw(XboxAxis.LeftStickX, Xcontroller), XCI.GetAxis(XboxAxis.LeftStickY, Xcontroller));
+		Vector2 input;
+		if (isKeyboard) {
+			input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
+		} else {
+			input = new Vector2 (XCI.GetAxisRaw (XboxAxis.LeftStickX, Xcontroller), XCI.GetAxis (XboxAxis.LeftStickY, Xcontroller));
+		}
+
 		int wallDirX = (controller.collisions.left) ? -1 : 1;
 
 		float targetVelocityX = input.x * moveSpeed;
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 
 		bool wallSliding = false;
-		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && !controller.enterPlayersCollision) {
+		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && !controller.interPlayersCollision) {
 			wallSliding = true;
 
 			if (velocity.y < -wallSlideSpeedMax) {
@@ -83,19 +83,17 @@ public class Player : MonoBehaviour {
 
 				if (input.x != wallDirX && input.x != 0) {
 					timeToWallUnstick -= Time.deltaTime;
-				}
-				else {
+				} else {
 					timeToWallUnstick = wallStickTime;
 				}
-			}
-			else {
+			} else {
 				timeToWallUnstick = wallStickTime;
 			}
 
 		}
 
-		if (XCI.GetButtonDown(XboxButton.A, Xcontroller)) {
-			if (XCI.GetButtonDown(XboxButton.A, Xcontroller)) {
+		if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (Input.GetButtonDown("Jump") && isKeyboard)) {
+			if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (Input.GetButtonDown("Jump") && isKeyboard)) {
 				if (wallSliding) {
 					if (wallDirX == input.x) {
 						velocity.x = -wallDirX * wallJumpClimb.x;
@@ -114,12 +112,11 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		if (XCI.GetButtonUp(XboxButton.A, Xcontroller)) {
+		if ((XCI.GetButtonUp (XboxButton.A, Xcontroller) && !isKeyboard) || (Input.GetButtonUp("Jump") && isKeyboard)){
 			if (velocity.y > minJumpVelocity) {
 				velocity.y = minJumpVelocity;
 			}
 		}
-
 
 		velocity.y += gravity * Time.deltaTime;
 		controller.Move (velocity * Time.deltaTime, input);
@@ -127,6 +124,5 @@ public class Player : MonoBehaviour {
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
 		}
-
 	}
 }

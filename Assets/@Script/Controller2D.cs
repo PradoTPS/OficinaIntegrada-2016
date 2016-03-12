@@ -5,7 +5,7 @@ public class Controller2D : RaycastController {
 
 	float maxClimbAngle = 80;
 	float maxDescendAngle = 80;
-	public bool enterPlayersCollision = false;
+	public bool interPlayersCollision = false;
 	public CollisionInfo collisions;
 	[HideInInspector]
 	public Vector2 playerInput;
@@ -63,9 +63,9 @@ public class Controller2D : RaycastController {
 
 			if (hit) {
 				if (hit.collider.tag == "Player") {
-					enterPlayersCollision = true;
+					interPlayersCollision = true;
 				} else {
-					enterPlayersCollision = false;
+					interPlayersCollision = false;
 				}
 				if (hit.distance == 0) {
 					continue;
