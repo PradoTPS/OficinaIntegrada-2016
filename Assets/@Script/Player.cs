@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using XboxCtrlrInput;
+using KeyboardInput;
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
@@ -8,6 +9,7 @@ public class Player : MonoBehaviour {
 	public bool isKeyboard = false;
 	public XboxController Xcontroller;
 	private static bool didQueryNumOfCtrlrs = false;
+	public KeyboardController Kcontroller;
 
 	public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
@@ -59,7 +61,7 @@ public class Player : MonoBehaviour {
 	void Update() {
 		Vector2 input;
 		if (isKeyboard) {
-			input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
+			input = new Vector2 (KCI.GetAxisRaw (KeyboardAxis.Horizontal, Kcontroller), KCI.GetAxisRaw (KeyboardAxis.Vertical, Kcontroller));
 		} else {
 			input = new Vector2 (XCI.GetAxisRaw (XboxAxis.LeftStickX, Xcontroller), XCI.GetAxis (XboxAxis.LeftStickY, Xcontroller));
 		}
@@ -92,8 +94,8 @@ public class Player : MonoBehaviour {
 
 		}
 
-		if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (Input.GetButtonDown("Jump") && isKeyboard)) {
-			if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (Input.GetButtonDown("Jump") && isKeyboard)) {
+		if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown(KeyboardButton.Jump, Kcontroller) && isKeyboard)) {
+			if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown(KeyboardButton.Jump, Kcontroller) && isKeyboard)) {
 				if (wallSliding) {
 					if (wallDirX == input.x) {
 						velocity.x = -wallDirX * wallJumpClimb.x;
@@ -112,7 +114,7 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		if ((XCI.GetButtonUp (XboxButton.A, Xcontroller) && !isKeyboard) || (Input.GetButtonUp("Jump") && isKeyboard)){
+		if ((XCI.GetButtonUp (XboxButton.A, Xcontroller) && !isKeyboard) || (KCI.GetButtonUp(KeyboardButton.Jump, Kcontroller) && isKeyboard)){
 			if (velocity.y > minJumpVelocity) {
 				velocity.y = minJumpVelocity;
 			}
