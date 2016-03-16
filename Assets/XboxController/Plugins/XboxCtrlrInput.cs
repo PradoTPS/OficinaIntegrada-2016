@@ -3,9 +3,7 @@ using XInputDotNetPure;
 
 namespace XboxCtrlrInput
 {
-	
-	// ================= Enumerations ==================== //
-	
+	#region Enumerations
 	/// <summary>
 	///     List of enumerated identifiers for Xbox controllers.
 	/// </summary>
@@ -62,13 +60,13 @@ namespace XboxCtrlrInput
 		LeftTrigger,
 		RightTrigger
 	}
+	#endregion
 	
-	// ================ Classes =================== //
-
+	#region Classes
+	#region Xbox Controller Input Class
 	public static class XCI
 	{
-		// ------------ Public Methods --------------- //
-		
+		#region Public Methods
 		// >>> For Buttons <<< //
 		
 		/// <summary> 
@@ -979,25 +977,17 @@ namespace XboxCtrlrInput
 			// NOT IMPLEMENTED for other platforms
 			return false;
 		}
-		
+		#endregion
 
-
-
-		////
-		// ------------- Private -------------- //
-		////
-
-		// ------------ Members --------------- //
-		
+		#region Private Properties
 		private static GamePadState[] xInputCtrlrs = new GamePadState[4];
 		private static GamePadState[] xInputCtrlrsPrev = new GamePadState[4];
 		private static int xiPrevFrameCount = -1;
 		private static bool xiUpdateAlreadyCalled = false;
 		private static bool xiNumOfCtrlrsQueried = false;
+		#endregion
 
-
-		// ------------ Methods --------------- //
-
+		#region Private Methods
 		private static bool OnMac()
 		{
 			// All Mac mappings are based off TattieBogle Xbox Controller drivers
@@ -1535,7 +1525,6 @@ namespace XboxCtrlrInput
 			return r;
 		}
 		
-		
 		// ------------- Private XInput Wrappers (for Windows Native player and editor only) -------------- //
 		
 		
@@ -1671,13 +1660,13 @@ namespace XboxCtrlrInput
 			
 			return r;
 		}
+		#endregion
 
-
-		// -------------------------- Handler Script -------------------
-
+		#region Handler Script Class
 		// Secret Private Script that does some maintainace work for XCI states. User should not use this script at all.
 		private class XciHandler : MonoBehaviour
 		{
+			#region Properties
 			private static XciHandler instance = null;
 
 			public bool u3dTrigger0LeftIsTouched = false;
@@ -1690,7 +1679,9 @@ namespace XboxCtrlrInput
 			public bool u3dTrigger3RightIsTouched = false;
 			public bool u3dTrigger4LeftIsTouched = false;
 			public bool u3dTrigger4RightIsTouched = false;
+			#endregion
 
+			#region Methods
 			void Awake()
 			{
 				if(XciHandler.instance != null)
@@ -1744,11 +1735,16 @@ namespace XboxCtrlrInput
 					return XciHandler.instance;
 				}
 			}
-		} // end of XciHandler
-	} // end of XCI
+			#endregion
+		} 
+		#endregion
+	}
+	#endregion
 
+	#region Xbox Button Extensions Class
 	public static class XboxButtonExtensions
 	{
+		#region Methods
 		public static bool IsDPad(this XboxButton button)
 		{
 			return (button == XboxButton.DPadUp ||
@@ -1769,5 +1765,8 @@ namespace XboxCtrlrInput
 				return XboxDPad.Right;
 			return default(XboxDPad);
 		}
+		#endregion
 	}
+	#endregion
+	#endregion
 }

@@ -2,23 +2,19 @@
 using System.Collections;
 
 public class CaptureBehaviour : MonoBehaviour {
+	#region Properties
+	private SpriteRenderer sprite;
+	#endregion
 
-	// Use this for initialization
-
-    public SpriteRenderer sprite;
-	void Start () {
-        sprite = GetComponent<SpriteRenderer>();
+	#region Methods
+	void Start() {
+        sprite = GetComponent<SpriteRenderer> ();
 	}
 
-    void OnTriggerEnter2D(Collider2D other) { 
-                
-            if(other.gameObject.tag == "Player"){
-                this.sprite.color = other.gameObject.GetComponent<SpriteRenderer>().color;
-            }
+    void OnTriggerEnter2D(Collider2D other) {       
+        if(other.gameObject.tag == "Player") {
+            this.sprite.color = other.gameObject.GetComponent<SpriteRenderer> ().color;
+        }
     }
-
-	// Update is called once per frame
-	void Update () {
-	    
-	}
+	#endregion
 }

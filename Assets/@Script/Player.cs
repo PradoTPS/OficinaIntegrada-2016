@@ -5,11 +5,14 @@ using KeyboardInput;
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
-
+	#region Properties
 	public bool isKeyboard = false;
-	public XboxController Xcontroller;
 	private static bool didQueryNumOfCtrlrs = false;
+
+	public XboxController Xcontroller;
 	public KeyboardController Kcontroller;
+
+	Controller2D controller;
 
 	public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
@@ -18,10 +21,6 @@ public class Player : MonoBehaviour {
 	float accelerationTimeGrounded = .1f;
 	float moveSpeed = 6;
 
-	public Vector2 wallJumpClimb;
-	public Vector2 wallJumpOff;
-	public Vector2 wallLeap;
-
 	public float wallSlideSpeedMax = 3;
 	public float wallStickTime = .25f;
 	float timeToWallUnstick;
@@ -29,17 +28,21 @@ public class Player : MonoBehaviour {
 	float gravity;
 	float maxJumpVelocity;
 	float minJumpVelocity;
-	Vector3 velocity;
 	float velocityXSmoothing;
+	Vector3 velocity;
 
-	Controller2D controller;
+	public Vector2 wallJumpClimb;
+	public Vector2 wallJumpOff;
+	public Vector2 wallLeap;
+	#endregion
 
+	#region Methods
 	void Start() {
 		controller = GetComponent<Controller2D> ();
 	
 		if(!didQueryNumOfCtrlrs) {
 			didQueryNumOfCtrlrs = true;
-			int queriedNumberOfCtrlrs = XCI.GetNumPluggedCtrlrs();
+			int queriedNumberOfCtrlrs = XCI.GetNumPluggedCtrlrs ();
 
 			if(queriedNumberOfCtrlrs == 1) {
 				Debug.Log("Only " + queriedNumberOfCtrlrs + " Xbox controller plugged in.");
@@ -55,7 +58,6 @@ public class Player : MonoBehaviour {
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
-
 	}
 
 	void Update() {
@@ -127,4 +129,5 @@ public class Player : MonoBehaviour {
 			velocity.y = 0;
 		}
 	}
+	#endregion
 }

@@ -8,6 +8,7 @@ using System.Collections;
 
 namespace XboxCtrlrInput.Editor {
 	static class InputManagerReplacer {
+		#region Methods
 		[MenuItem("Window/XboxCtrlrInput/Replace InputManager.asset...")]
 		static void ReplaceInputManagerAsset() {
 
@@ -44,5 +45,6 @@ namespace XboxCtrlrInput.Editor {
 			File.Copy(settingsFile, originalSettingsFile, true);
 			Debug.Log("Backup file: " + backupSettingsFile);
 		}
+		#endregion
 	}
 }

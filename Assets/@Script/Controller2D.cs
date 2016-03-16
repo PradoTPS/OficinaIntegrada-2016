@@ -2,18 +2,23 @@
 using System.Collections;
 
 public class Controller2D : RaycastController {
-
-	float maxClimbAngle = 80;
-	float maxDescendAngle = 80;
-	public bool interPlayersCollision = false;
+	#region Properties
 	public CollisionInfo collisions;
+
 	[HideInInspector]
 	public Vector2 playerInput;
 
+	[HideInInspector]
+	public bool interPlayersCollision = false;
+
+	float maxClimbAngle = 80;
+	float maxDescendAngle = 80;
+	#endregion
+
+	#region Methods
 	public override void Start() {
 		base.Start ();
 		collisions.faceDir = 1;
-
 	}
 
 	public void Move(Vector3 velocity, bool standingOnPlatform) {
@@ -31,7 +36,7 @@ public class Controller2D : RaycastController {
 		}
 
 		if (velocity.y < 0) {
-			DescendSlope(ref velocity);
+			DescendSlope (ref velocity);
 		}
 
 		HorizontalCollisions (ref velocity);
@@ -57,7 +62,7 @@ public class Controller2D : RaycastController {
 		for (int i = 0; i < horizontalRayCount; i ++) {
 			Vector2 rayOrigin = (directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight;
 			rayOrigin += Vector2.up * (horizontalRaySpacing * i);
-			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
+			RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
 
 			Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength,Color.red);
 
@@ -71,7 +76,7 @@ public class Controller2D : RaycastController {
 					continue;
 				}
 
-				float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+				float slopeAngle = Vector2.Angle (hit.normal, Vector2.up);
 
 				if (i == 0 && slopeAngle <= maxClimbAngle) {
 					if (collisions.descendingSlope) {
@@ -83,7 +88,7 @@ public class Controller2D : RaycastController {
 						distanceToSlopeStart = hit.distance-skinWidth;
 						velocity.x -= distanceToSlopeStart * directionX;
 					}
-					ClimbSlope(ref velocity, slopeAngle);
+					ClimbSlope (ref velocity, slopeAngle);
 					velocity.x += distanceToSlopeStart * directionX;
 				}
 
@@ -92,7 +97,7 @@ public class Controller2D : RaycastController {
 					rayLength = hit.distance;
 
 					if (collisions.climbingSlope) {
-						velocity.y = Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
+						velocity.y = Mathf.Tan (collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
 					}
 
 					collisions.left = directionX == -1;
@@ -110,9 +115,9 @@ public class Controller2D : RaycastController {
 
 			Vector2 rayOrigin = (directionY == -1)?raycastOrigins.bottomLeft:raycastOrigins.topLeft;
 			rayOrigin += Vector2.right * (verticalRaySpacing * i + velocity.x);
-			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
+			RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
 
-			Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength,Color.red);
+			Debug.DrawRay (rayOrigin, Vector2.up * directionY * rayLength,Color.red);
 
 			if (hit) {
 				if (hit.collider.tag == "Through") {
@@ -124,7 +129,7 @@ public class Controller2D : RaycastController {
 					}
 					if (playerInput.y == -1) {
 						collisions.fallingThroughPlatform = true;
-						Invoke("ResetFallingThroughPlatform",.5f);
+						Invoke ("ResetFallingThroughPlatform",.5f);
 						continue;
 					}
 				}
@@ -133,7 +138,7 @@ public class Controller2D : RaycastController {
 				rayLength = hit.distance;
 
 				if (collisions.climbingSlope) {
-					velocity.x = velocity.y / Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
+					velocity.x = velocity.y / Mathf.Tan (collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
 				}
 
 				collisions.below = directionY == -1;
@@ -142,10 +147,10 @@ public class Controller2D : RaycastController {
 		}
 
 		if (collisions.climbingSlope) {
-			float directionX = Mathf.Sign(velocity.x);
-			rayLength = Mathf.Abs(velocity.x) + skinWidth;
+			float directionX = Mathf.Sign (velocity.x);
+			rayLength = Mathf.Abs (velocity.x) + skinWidth;
 			Vector2 rayOrigin = ((directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight) + Vector2.up * velocity.y;
-			RaycastHit2D hit = Physics2D.Raycast(rayOrigin,Vector2.right * directionX,rayLength,collisionMask);
+			RaycastHit2D hit = Physics2D.Raycast (rayOrigin,Vector2.right * directionX,rayLength,collisionMask);
 
 			if (hit) {
 				float slopeAngle = Vector2.Angle(hit.normal,Vector2.up);
@@ -176,11 +181,11 @@ public class Controller2D : RaycastController {
 		RaycastHit2D hit = Physics2D.Raycast (rayOrigin, -Vector2.up, Mathf.Infinity, collisionMask);
 
 		if (hit) {
-			float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+			float slopeAngle = Vector2.Angle (hit.normal, Vector2.up);
 			if (slopeAngle != 0 && slopeAngle <= maxDescendAngle) {
 				if (Mathf.Sign(hit.normal.x) == directionX) {
-					if (hit.distance - skinWidth <= Mathf.Tan(slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x)) {
-						float moveDistance = Mathf.Abs(velocity.x);
+					if (hit.distance - skinWidth <= Mathf.Tan (slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x)) {
+						float moveDistance = Mathf.Abs (velocity.x);
 						float descendVelocityY = Mathf.Sin (slopeAngle * Mathf.Deg2Rad) * moveDistance;
 						velocity.x = Mathf.Cos (slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign (velocity.x);
 						velocity.y -= descendVelocityY;
@@ -197,17 +202,19 @@ public class Controller2D : RaycastController {
 	void ResetFallingThroughPlatform() {
 		collisions.fallingThroughPlatform = false;
 	}
+	#endregion
 
+	#region Structs
 	public struct CollisionInfo {
 		public bool above, below;
 		public bool left, right;
 
 		public bool climbingSlope;
 		public bool descendingSlope;
+		public bool fallingThroughPlatform;
 		public float slopeAngle, slopeAngleOld;
 		public Vector3 velocityOld;
 		public int faceDir;
-		public bool fallingThroughPlatform;
 
 		public void Reset() {
 			above = below = false;
@@ -219,5 +226,5 @@ public class Controller2D : RaycastController {
 			slopeAngle = 0;
 		}
 	}
-
+	#endregion
 }
