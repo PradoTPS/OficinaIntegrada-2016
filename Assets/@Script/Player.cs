@@ -74,7 +74,7 @@ public class Player : MonoBehaviour {
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 
 		bool wallSliding = false;
-		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && !controller.interPlayersCollision) {
+		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.lastHit.collider.tag != "Player") {
 			wallSliding = true;
 
 			if (velocity.y < -wallSlideSpeedMax) {
@@ -127,6 +127,17 @@ public class Player : MonoBehaviour {
 
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
+		}
+
+		if (((XCI.GetButtonUp (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonUp (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
+			/*Vector3 lerpTarget;
+			if (transform.position.x > controller.lastHit.transform.position.x) {
+				lerpTarget = new Vector3(controller.lastHit.transform.position.x - 1.5f, controller.lastHit.transform.position.y, controller.lastHit.transform.position.z);
+			} else {
+				lerpTarget = new Vector3(controller.lastHit.transform.position.x + 1.5f, controller.lastHit.transform.position.y, controller.lastHit.transform.position.z);
+			}
+
+			controller.lastHit.transform.position = Vector3.Lerp (controller.lastHit.transform.position, lerpTarget, 0.1f);*/
 		}
 	}
 	#endregion
