@@ -34,6 +34,8 @@ public class Player : MonoBehaviour {
 	public Vector2 wallJumpClimb;
 	public Vector2 wallJumpOff;
 	public Vector2 wallLeap;
+
+	public float kN0CkB4cK;
 	#endregion
 
 	#region Methods
@@ -129,16 +131,30 @@ public class Player : MonoBehaviour {
 			velocity.y = 0;
 		}
 
-		if (((XCI.GetButtonUp (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonUp (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
-			/*Vector3 lerpTarget;
-			if (transform.position.x > controller.lastHit.transform.position.x) {
-				lerpTarget = new Vector3(controller.lastHit.transform.position.x - 1.5f, controller.lastHit.transform.position.y, controller.lastHit.transform.position.z);
-			} else {
-				lerpTarget = new Vector3(controller.lastHit.transform.position.x + 1.5f, controller.lastHit.transform.position.y, controller.lastHit.transform.position.z);
-			}
 
-			controller.lastHit.transform.position = Vector3.Lerp (controller.lastHit.transform.position, lerpTarget, 0.1f);*/
+
+		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
+			float i = 20f;
+			Vector3 other = controller.lastHit.transform.position;
+			int direction = XHittingDirection(this.transform , controller.lastHit.transform);
+
+
+			 
+
+			//other.tansform.position = Becto3.Lerp(transfrom.psoition, transform.position + kcock , pushSpeed);
+			//impact = Vector3.Lerp(impact , Vector3.zero , 5*Time.deltaTime);
+
+			other.x = Mathf.Lerp (other.x, other.x + kN0CkB4cK*direction , i * Time.deltaTime);
+			controller.lastHit.transform.position = other;
 		}
 	}
 	#endregion
-}
+
+	int XHittingDirection (Transform From , Transform To){
+		
+		Vector3 fk = To.position - From.position;
+		int dir = 0;
+		dir = (fk.x > 0) ? 1 : -1;
+		return dir;
+	}
+} 
