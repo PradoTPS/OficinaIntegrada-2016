@@ -35,7 +35,8 @@ public class Player : MonoBehaviour {
 	public Vector2 wallJumpOff;
 	public Vector2 wallLeap;
 
-	public float kN0CkB4cK;
+	public float knockbackForce;
+	public bool knocked;
 	#endregion
 
 	#region Methods
@@ -61,6 +62,15 @@ public class Player : MonoBehaviour {
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
 	}
+
+	int XHittingDirection (Transform From , Transform To){
+
+		Vector3 fk = To.position - From.position;
+		int dir = 0;
+		dir = (fk.x > 0) ? 1 : -1;
+		return dir;
+	}
+
 
 	void Update() {
 		Vector2 input;
@@ -133,28 +143,43 @@ public class Player : MonoBehaviour {
 
 
 
-		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
-			float i = 20f;
-			Vector3 other = controller.lastHit.transform.position;
-			int direction = XHittingDirection(this.transform , controller.lastHit.transform);
+		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown(KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
+			controller.lastHit.collider.gameObject.GetComponent<Player> ().knocked = true;
+			Debug.Log ("1");
+			Knocking ();
 
-
-			 
-
-			//other.tansform.position = Becto3.Lerp(transfrom.psoition, transform.position + kcock , pushSpeed);
-			//impact = Vector3.Lerp(impact , Vector3.zero , 5*Time.deltaTime);
-
-			other.x = Mathf.Lerp (other.x, other.x + kN0CkB4cK*direction , i * Time.deltaTime);
-			controller.lastHit.transform.position = other;
 		}
+
 	}
+
+	IEnumerator Waiter ()
+	{
+		Debug.Log ("4");
+		yield return new WaitForSeconds(.5f);
+		controller.lastHit.collider.gameObject.GetComponent<Player> ().knocked = false;
+		Debug.Log ("Other: " + controller.lastHit.collider.gameObject.GetComponent<Player> ().knocked);
+
+	}
+
+
+	void Knocking (){
+		Debug.Log ("2");
+		if (controller.lastHit.transform.gameObject.GetComponent<Player> ().knocked ) {
+			Debug.Log ("3");
+			float i = 1f;
+			Vector3 other = controller.lastHit.transform.position;
+			int direction = XHittingDirection (this.transform, controller.lastHit.transform);
+
+			other.x = Mathf.Lerp (other.x, other.x + knockbackForce * direction, i * Time.deltaTime);
+			controller.lastHit.transform.position = other;
+			Debug.Log("Other: " + controller.lastHit.collider.gameObject.GetComponent<Player>().knocked + " // " + "lasthit " + controller.lastHit.collider.gameObject.name);
+			StartCoroutine(Waiter ());
+
+		}
+	
+	}
+
 	#endregion
 
-	int XHittingDirection (Transform From , Transform To){
-		
-		Vector3 fk = To.position - From.position;
-		int dir = 0;
-		dir = (fk.x > 0) ? 1 : -1;
-		return dir;
-	}
+
 } 
