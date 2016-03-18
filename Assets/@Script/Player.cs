@@ -35,8 +35,12 @@ public class Player : MonoBehaviour {
 	public Vector2 wallJumpOff;
 	public Vector2 wallLeap;
 
-	private bool pushing = false;
+	Vector3 lerpTarget;
 	public Transform other;
+	private bool pushing = false;
+	private float inittial;
+	private float distance;
+	private float final;
 	#endregion
 
 	#region Methods
@@ -143,40 +147,45 @@ public class Player : MonoBehaviour {
 
 
 
-		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown(KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
-			pushing = true;
+		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
 			other = controller.lastHit.transform;
-		}
 
-		if (pushing) {
-			Vector3 lerpTarget;
-			Vector3 inittial = other.position;
-			float distance = 1.5f;
+			inittial = other.position.x;
+			distance = 1.5f;
 
-			if (transform.position.x > inittial.x) {
+			if (transform.position.x > inittial) {
 				distance *= -1;
 			} else {
 				distance *= 1;
 			}
 
-			lerpTarget = new Vector3(other.position.x + distance, other.position.y, other.position.z);
-			other.position = Vector3.Lerp (other.position, lerpTarget, Time.deltaTime * 2f);
+			final = inittial + distance;
+			lerpTarget = new Vector3 (final, other.position.y, other.position.z);
+			pushing = true;
+		}
+			
+		if(pushing){
+			/*if (other.gameObject.GetComponent<Controller2D> ().lastHit != null && other.gameObject.GetComponent<Controller2D> ().lastHit.transform.gameObject.tag == "Wall") {
+				Debug.Log (other.gameObject.GetComponent<Controller2D> ().lastHit.collider.gameObject.tag );
+
+
+				final = other.position.x;
+
+				pushing = false;
+			} */
 
 			if (distance >= 0f) {
-				if (other.position.x <= inittial.x + lerpTarget.x) {
+				if (other.position.x >= final) {
 					pushing = false;
-					Debug.Log ("ACABOU");
 				}
 			} else {
-				if (other.position.x >= inittial.x + lerpTarget.x) {
+				if (other.position.x <= final) {
 					pushing = false;
-					Debug.Log ("ACABOU");
 				}
 			}
+
+			other.position = Vector3.Lerp (other.position, lerpTarget, Time.deltaTime * 10f);
 		}
 	}
-
 	#endregion
-
-
 } 
