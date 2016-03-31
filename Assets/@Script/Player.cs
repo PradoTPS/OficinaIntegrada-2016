@@ -165,14 +165,14 @@ public class Player : MonoBehaviour {
 		}
 			
 		if(pushing){
-			/*if (other.gameObject.GetComponent<Controller2D> ().lastHit != null && other.gameObject.GetComponent<Controller2D> ().lastHit.transform.gameObject.tag == "Wall") {
-				Debug.Log (other.gameObject.GetComponent<Controller2D> ().lastHit.collider.gameObject.tag );
-
-
-				final = other.position.x;
-
+			if (other.gameObject.GetComponent<Controller2D> ().curHit != new RaycastHit2D() && 
+				other.gameObject.GetComponent<Controller2D> ().curHit.transform.gameObject.tag == "Wall") {
+				Debug.Log (other.gameObject.GetComponent<Controller2D> ().curHit.collider.gameObject.tag);
 				pushing = false;
-			} */
+			} else {
+				if(other.gameObject.GetComponent<Controller2D> ().curHit != new RaycastHit2D())
+				other.position = Vector3.Lerp (other.position, lerpTarget, Time.deltaTime * 10f);
+			}
 
 			if (distance >= 0f) {
 				if (other.position.x >= final) {
@@ -184,7 +184,6 @@ public class Player : MonoBehaviour {
 				}
 			}
 
-			other.position = Vector3.Lerp (other.position, lerpTarget, Time.deltaTime * 10f);
 		}
 	}
 	#endregion
