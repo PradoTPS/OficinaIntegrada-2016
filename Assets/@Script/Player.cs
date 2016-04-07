@@ -4,7 +4,7 @@ using XboxCtrlrInput;
 using KeyboardInput;
 
 [RequireComponent (typeof (Controller2D))]
-public class Player : MonoBehaviour {
+public class Player : CollisionCorrector {
 	#region Properties
 	public bool isKeyboard = false;
 	private static bool didQueryNumOfCtrlrs = false;
@@ -30,6 +30,8 @@ public class Player : MonoBehaviour {
 	float minJumpVelocity;
 	float velocityXSmoothing;
 	Vector3 velocity;
+
+	Vector2 input;
 
 	public Vector2 wallJumpClimb;
 	public Vector2 wallJumpOff;
@@ -66,20 +68,12 @@ public class Player : MonoBehaviour {
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
 	}
-
-	int XHittingDirection (Transform From , Transform To){
-
-		Vector3 fk = To.position - From.position;
-		int dir = 0;
-		dir = (fk.x > 0) ? 1 : -1;
-		return dir;
-	}
-
-
-	void Update() {
-		Vector2 input;
+		
+	void Move(){
+		
 		if (isKeyboard) {
 			input = new Vector2 (KCI.GetAxisRaw (KeyboardAxis.Horizontal, Kcontroller), KCI.GetAxisRaw (KeyboardAxis.Vertical, Kcontroller));
+		
 		} else {
 			input = new Vector2 (XCI.GetAxisRaw (XboxAxis.LeftStickX, Xcontroller), XCI.GetAxis (XboxAxis.LeftStickY, Xcontroller));
 		}
@@ -145,7 +139,11 @@ public class Player : MonoBehaviour {
 			velocity.y = 0;
 		}
 
+	}
 
+	void Update() {
+
+		Move ();
 
 		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
 			other = controller.lastHit.transform;
@@ -163,28 +161,9 @@ public class Player : MonoBehaviour {
 			lerpTarget = new Vector3 (final, other.position.y, other.position.z);
 			pushing = true;
 		}
-			
-		if(pushing){
-			if (other.gameObject.GetComponent<Controller2D> ().curHit != new RaycastHit2D() && 
-				other.gameObject.GetComponent<Controller2D> ().curHit.transform.gameObject.tag == "Wall") {
-				Debug.Log (other.gameObject.GetComponent<Controller2D> ().curHit.collider.gameObject.tag);
-				pushing = false;
-			} else {
-				if(other.gameObject.GetComponent<Controller2D> ().curHit != new RaycastHit2D())
-				other.position = Vector3.Lerp (other.position, lerpTarget, Time.deltaTime * 10f);
-			}
-
-			if (distance >= 0f) {
-				if (other.position.x >= final) {
-					pushing = false;
-				}
-			} else {
-				if (other.position.x <= final) {
-					pushing = false;
-				}
-			}
-
-		}
 	}
+
+
+
 	#endregion
 } 

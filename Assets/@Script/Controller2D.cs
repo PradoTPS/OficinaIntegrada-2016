@@ -9,9 +9,6 @@ public class Controller2D : RaycastController {
 	public RaycastHit2D lastHit;
 
 	[HideInInspector]
-	public RaycastHit2D curHit;
-
-	[HideInInspector]
 	public Vector2 playerInput;
 
 	[HideInInspector]
@@ -68,7 +65,7 @@ public class Controller2D : RaycastController {
 		for (int i = 0; i < horizontalRayCount; i ++) {
 			Vector2 rayOrigin = (directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight;
 			rayOrigin += Vector2.up * (horizontalRaySpacing * i);
-			RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Vector2.right , rayLength, collisionMask);
+			RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
 
 			Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength,Color.red);
 
@@ -105,14 +102,9 @@ public class Controller2D : RaycastController {
 					collisions.left = directionX == -1;
 					collisions.right = directionX == 1;
 				}
-
-				curHit = hit;
-
 			} else {
 				interPlayersCollision = false;
 				hit.Equals (null);
-				curHit = new RaycastHit2D ();
-
 			}
 		}
 	}
