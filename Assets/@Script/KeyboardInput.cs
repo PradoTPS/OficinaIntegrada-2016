@@ -15,7 +15,8 @@ namespace KeyboardInput {
 
 	public enum KeyboardButton {
 		Jump,
-		Action
+		Action,
+		Launch
 	}
 	#endregion
 

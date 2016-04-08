@@ -224,12 +224,12 @@ public class Controller2D : RaycastController {
 
 		if (wallHitLeft.distance > 0f) {
 			distanceWallLeft = wallHitLeft.distance;
-			Debug.Log (distanceWallLeft);
+
 		}
 
 		if (wallHitRight.distance > 0f) {
 			distanceWallRight = wallHitRight.distance;
-			Debug.Log (distanceWallRight);
+
 		}
 	}
 

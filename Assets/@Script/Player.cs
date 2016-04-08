@@ -25,7 +25,8 @@ public class Player : MonoBehaviour {
 	public float wallStickTime = .25f;
 	float timeToWallUnstick;
 
-	float gravity;
+	[HideInInspector] 
+	public float gravity;
 	float maxJumpVelocity;
 	float minJumpVelocity;
 	float velocityXSmoothing;
@@ -44,6 +45,10 @@ public class Player : MonoBehaviour {
 	private float lerpVelocity = 0;
 	private float inittial;
 	private float final;
+
+
+	public string curState;
+
 	#endregion
 
 	#region Methods
@@ -64,6 +69,7 @@ public class Player : MonoBehaviour {
 
 			XCI.DEBUG_LogControllerNames();
 		}
+
 			
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
@@ -77,6 +83,7 @@ public class Player : MonoBehaviour {
 		} else {
 			input = new Vector2 (XCI.GetAxisRaw (XboxAxis.LeftStickX, Xcontroller), XCI.GetAxis (XboxAxis.LeftStickY, Xcontroller));
 		}
+
 	}
 
 	void Jump(){
@@ -198,10 +205,43 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	void Launching(){
+		if (isKeyboard) {
+			if (KCI.GetButtonDown (KeyboardButton.Launch, Kcontroller)) {
+				if (controller.collisions.below && curState != "Preparation") {
+					curState = "Preparation";
+				}
+			} 
+			if (KCI.GetButtonUp (KeyboardButton.Launch, Kcontroller)) {
+				if (curState == "Preparation") {
+					curState = "Still";
+				}
+			}
+		} else {
+			if (XCI.GetButtonDown (XboxButton.B, Xcontroller)) {
+				if (controller.collisions.below && curState != "Preparation") {
+					curState = "Preparation";
+				}
+			} 
+			if (XCI.GetButtonUp (XboxButton.B, Xcontroller)) {
+				if (curState == "Preparation") {
+					curState = "Still";
+				
+				}
+			}
+		}
+		
+		Debug.Log (curState);
+	}
+
+
 	void Update() {
-		Walk ();
-		Jump ();
-		Punch ();
+		Launching ();
+		if (curState != "Preparation") {
+			Walk ();
+			Jump ();
+			Punch ();
+		}
 
 	}
 	#endregion
