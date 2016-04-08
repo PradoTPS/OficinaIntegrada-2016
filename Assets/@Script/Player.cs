@@ -4,7 +4,7 @@ using XboxCtrlrInput;
 using KeyboardInput;
 
 [RequireComponent (typeof (Controller2D))]
-public class Player : CollisionCorrector {
+public class Player : MonoBehaviour {
 	#region Properties
 	public bool isKeyboard = false;
 	private static bool didQueryNumOfCtrlrs = false;
@@ -39,9 +39,10 @@ public class Player : CollisionCorrector {
 
 	Vector3 lerpTarget;
 	public Transform other;
-	private bool pushing = false;
+	public bool pushing = false;
+	public float distance = 0;
+	private float lerpVelocity = 0;
 	private float inittial;
-	private float distance;
 	private float final;
 	#endregion
 
@@ -69,15 +70,16 @@ public class Player : CollisionCorrector {
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
 	}
 		
-	void Move(){
-		
+	void Walk(){
 		if (isKeyboard) {
 			input = new Vector2 (KCI.GetAxisRaw (KeyboardAxis.Horizontal, Kcontroller), KCI.GetAxisRaw (KeyboardAxis.Vertical, Kcontroller));
 		
 		} else {
 			input = new Vector2 (XCI.GetAxisRaw (XboxAxis.LeftStickX, Xcontroller), XCI.GetAxis (XboxAxis.LeftStickY, Xcontroller));
 		}
+	}
 
+	void Jump(){
 		int wallDirX = (controller.collisions.left) ? -1 : 1;
 
 		float targetVelocityX = input.x * moveSpeed;
@@ -138,32 +140,68 @@ public class Player : CollisionCorrector {
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
 		}
-
 	}
 
-	void Update() {
-
-		Move ();
-
+	void Punch() {
 		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
+			pushing = true;
+			lerpVelocity = 0f;
 			other = controller.lastHit.transform;
-
 			inittial = other.position.x;
+
 			distance = 1.5f;
 
 			if (transform.position.x > inittial) {
+				if (other.GetComponent<Controller2D> ().distanceWallLeft - other.GetComponent<Renderer>().bounds.size.x/2 < distance) {
+					distance = other.GetComponent<Controller2D> ().distanceWallLeft - other.GetComponent<Renderer>().bounds.size.x/2;
+				}
+				if (other.GetComponent<Controller2D> ().distanceWallLeft <= other.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
+					distance = 0f;
+				}
 				distance *= -1;
 			} else {
+				if (other.GetComponent<Controller2D> ().distanceWallRight - other.GetComponent<Renderer>().bounds.size.x/2 < distance) {
+					distance = other.GetComponent<Controller2D> ().distanceWallRight - other.GetComponent<Renderer>().bounds.size.x/2;
+				}
+				if (other.GetComponent<Controller2D> ().distanceWallRight <= other.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
+					distance = 0f;
+				}
 				distance *= 1;
 			}
 
 			final = inittial + distance;
+				
 			lerpTarget = new Vector3 (final, other.position.y, other.position.z);
-			pushing = true;
+		}
+
+		if (pushing) {
+			lerpVelocity += Time.deltaTime * 5f;
+			if (lerpVelocity > 1f) {
+				lerpVelocity = 1f;
+			}
+
+			float perc = lerpVelocity / 1f;
+
+			if (distance >= 0f) {
+				if (other.position.x >= final || perc == 1f) {
+					pushing = false;
+					distance = 0;
+				}
+			} else {
+				if (other.position.x <= final || perc == 1f) {
+					pushing = false;
+					distance = 0;
+				}
+			}
+			
+			other.position = Vector3.Lerp (other.position, lerpTarget, perc);
 		}
 	}
 
-
-
+	void Update() {
+		Walk ();
+		Jump ();
+		Punch ();
+	}
 	#endregion
 } 
