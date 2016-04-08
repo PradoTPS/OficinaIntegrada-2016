@@ -202,6 +202,7 @@ public class Player : MonoBehaviour {
 		Walk ();
 		Jump ();
 		Punch ();
+
 	}
 	#endregion
 } 

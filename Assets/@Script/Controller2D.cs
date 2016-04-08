@@ -60,6 +60,7 @@ public class Controller2D : RaycastController {
 		if (standingOnPlatform) {
 			collisions.below = true;
 		}
+		WallCheck(ref v);
 	}
 
 	void HorizontalCollisions(ref Vector3 velocity) {
@@ -210,16 +211,16 @@ public class Controller2D : RaycastController {
 
 	void WallCheck(ref Vector3 velocity) {
 		float rayLength = Mathf.Abs (velocity.x) + 1.5f + transform.GetComponent<Renderer>().bounds.size.x/2;
-
+		Vector2 rayOrigin = transform.position;
+		RaycastHit2D wallHitRight = Physics2D.Raycast (rayOrigin, Vector2.right, rayLength, collisionMask);
+		RaycastHit2D wallHitLeft = Physics2D.Raycast (rayOrigin, Vector2.left, rayLength, collisionMask);
 		if (Mathf.Abs(velocity.x) < skinWidth) {
 			rayLength = 2*skinWidth;
 		}
 
-		Vector2 rayOrigin = transform.position;
-		RaycastHit2D wallHitRight = Physics2D.Raycast (rayOrigin, Vector2.right, rayLength, collisionMask);
-		RaycastHit2D wallHitLeft = Physics2D.Raycast (rayOrigin, Vector2.left, rayLength, collisionMask);
+
 		Debug.DrawRay(rayOrigin, Vector2.right * rayLength, Color.green);
-		Debug.DrawRay(rayOrigin, Vector2.left * rayLength, Color.blue);
+		Debug.DrawRay(rayOrigin, Vector2.left * rayLength, Color.cyan);
 
 		if (wallHitLeft.distance > 0f) {
 			distanceWallLeft = wallHitLeft.distance;
@@ -237,7 +238,7 @@ public class Controller2D : RaycastController {
 	}
 
 	void Update(){
-		WallCheck (ref v);
+		
 	}
 	#endregion
 
