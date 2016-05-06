@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
 	public KeyboardController Kcontroller;
 
 	Controller2D controller;
+	SpriteRenderer spriteRender;
 
 	public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
@@ -39,7 +40,8 @@ public class Player : MonoBehaviour {
 	public Vector2 wallLeap;
 
 	Vector3 lerpTarget;
-	public Transform other;
+	public Transform otherHorizontal;
+	public Transform otherVertical;
 	public bool pushing = false;
 	public float distance = 0;
 	private float lerpVelocity = 0;
@@ -54,7 +56,8 @@ public class Player : MonoBehaviour {
 	#region Methods
 	void Start() {
 		controller = GetComponent<Controller2D> ();
-	
+		spriteRender = GetComponent<SpriteRenderer> ();
+
 		if(!didQueryNumOfCtrlrs) {
 			didQueryNumOfCtrlrs = true;
 			int queriedNumberOfCtrlrs = XCI.GetNumPluggedCtrlrs ();
@@ -93,7 +96,7 @@ public class Player : MonoBehaviour {
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 
 		bool wallSliding = false;
-		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.lastHit.collider.tag != "Player") {
+		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.horizontalLastHit.collider.tag != "Player") {
 			wallSliding = true;
 
 			if (velocity.y < -wallSlideSpeedMax) {
@@ -153,24 +156,23 @@ public class Player : MonoBehaviour {
 		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
 			pushing = true;
 			lerpVelocity = 0f;
-			other = controller.lastHit.transform;
-			inittial = other.position.x;
-
+			otherHorizontal = controller.horizontalLastHit.transform;
+			inittial = otherHorizontal.position.x;
 			distance = 1.5f;
 
 			if (transform.position.x > inittial) {
-				if (other.GetComponent<Controller2D> ().distanceWallLeft - other.GetComponent<Renderer>().bounds.size.x/2 < distance) {
-					distance = other.GetComponent<Controller2D> ().distanceWallLeft - other.GetComponent<Renderer>().bounds.size.x/2;
+				if (otherHorizontal.GetComponent<Controller2D> ().distanceWallLeft - otherHorizontal.GetComponent<Renderer>().bounds.size.x/2 < distance) {
+					distance = otherHorizontal.GetComponent<Controller2D> ().distanceWallLeft - otherHorizontal.GetComponent<Renderer>().bounds.size.x/2;
 				}
-				if (other.GetComponent<Controller2D> ().distanceWallLeft <= other.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
+				if (otherHorizontal.GetComponent<Controller2D> ().distanceWallLeft <= otherHorizontal.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
 					distance = 0f;
 				}
 				distance *= -1;
 			} else {
-				if (other.GetComponent<Controller2D> ().distanceWallRight - other.GetComponent<Renderer>().bounds.size.x/2 < distance) {
-					distance = other.GetComponent<Controller2D> ().distanceWallRight - other.GetComponent<Renderer>().bounds.size.x/2;
+				if (otherHorizontal.GetComponent<Controller2D> ().distanceWallRight - otherHorizontal.GetComponent<Renderer>().bounds.size.x/2 < distance) {
+					distance = otherHorizontal.GetComponent<Controller2D> ().distanceWallRight - otherHorizontal.GetComponent<Renderer>().bounds.size.x/2;
 				}
-				if (other.GetComponent<Controller2D> ().distanceWallRight <= other.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
+				if (otherHorizontal.GetComponent<Controller2D> ().distanceWallRight <= otherHorizontal.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
 					distance = 0f;
 				}
 				distance *= 1;
@@ -178,7 +180,7 @@ public class Player : MonoBehaviour {
 
 			final = inittial + distance;
 				
-			lerpTarget = new Vector3 (final, other.position.y, other.position.z);
+			lerpTarget = new Vector3 (final, otherHorizontal.position.y, otherHorizontal.position.z);
 		}
 
 		if (pushing) {
@@ -190,18 +192,18 @@ public class Player : MonoBehaviour {
 			float perc = lerpVelocity / 1f;
 
 			if (distance >= 0f) {
-				if (other.position.x >= final || perc == 1f) {
+				if (otherHorizontal.position.x >= final || perc == 1f) {
 					pushing = false;
 					distance = 0;
 				}
 			} else {
-				if (other.position.x <= final || perc == 1f) {
+				if (otherHorizontal.position.x <= final || perc == 1f) {
 					pushing = false;
 					distance = 0;
 				}
 			}
 			
-			other.position = Vector3.Lerp (other.position, lerpTarget, perc);
+			otherHorizontal.position = Vector3.Lerp (otherHorizontal.position, lerpTarget, perc);
 		}
 	}
 
@@ -234,14 +236,28 @@ public class Player : MonoBehaviour {
 		Debug.Log (curState);
 	}
 
+	void Death(){
+
+		otherVertical = controller.verticalLastHit.transform;
+		if (controller.collisions.below && otherVertical.gameObject.tag == "Player") {
+		
+			otherVertical.gameObject.GetComponent<Player> ().curState = "Dead";	
+			otherVertical.gameObject.GetComponent<SpriteRenderer> ().color = Color.grey;
+		}	
+	}
 
 	void Update() {
-		Launching ();
-		if (curState != "Preparation") {
-			Walk ();
-			Jump ();
-			Punch ();
+		if (curState != "Dead") {
+			Launching ();
+			if (curState != "Preparation") {
+				Walk ();
+				Jump ();
+				Punch ();
+			}
 		}
+		Death ();
+		//Testing death stuff
+	
 
 	}
 	#endregion

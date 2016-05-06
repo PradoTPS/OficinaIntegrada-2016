@@ -6,7 +6,9 @@ public class Controller2D : RaycastController {
 	public CollisionInfo collisions;
 
 	[HideInInspector]
-	public RaycastHit2D lastHit;
+	public RaycastHit2D horizontalLastHit;
+	[HideInInspector]
+	public RaycastHit2D verticalLastHit;
 
 	[HideInInspector]
 	public Vector2 playerInput;
@@ -79,7 +81,7 @@ public class Controller2D : RaycastController {
 			Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength,Color.red);
 
 			if (hit) {
-				lastHit = hit;
+				horizontalLastHit = hit;
 				if (hit.collider.tag == "Player") {
 					interPlayersCollision = true;
 				}
@@ -130,6 +132,7 @@ public class Controller2D : RaycastController {
 			Debug.DrawRay (rayOrigin, Vector2.up * directionY * rayLength,Color.red);
 
 			if (hit) {
+				verticalLastHit = hit;
 				if (hit.collider.tag == "Through") {
 					if (directionY == 1 || hit.distance == 0) {
 						continue;
