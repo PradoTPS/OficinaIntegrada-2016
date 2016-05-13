@@ -232,8 +232,6 @@ public class Player : MonoBehaviour {
 				}
 			}
 		}
-		
-		Debug.Log (curState);
 	}
 
 	void Death(){
