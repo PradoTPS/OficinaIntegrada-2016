@@ -216,14 +216,14 @@ public class Controller2D : RaycastController {
 		float rayLength = Mathf.Abs (velocity.x) + 1.5f + transform.GetComponent<Renderer>().bounds.size.x/2;
 		Vector2 rayOrigin = transform.position;
 		RaycastHit2D wallHitRight = Physics2D.Raycast (rayOrigin, Vector2.right, rayLength, collisionMask);
-		RaycastHit2D wallHitLeft = Physics2D.Raycast (rayOrigin, Vector2.left, rayLength, collisionMask);
+		RaycastHit2D wallHitLeft = Physics2D.Raycast (rayOrigin, -Vector2.right, rayLength, collisionMask);
 		if (Mathf.Abs(velocity.x) < skinWidth) {
 			rayLength = 2*skinWidth;
 		}
 
 
 		Debug.DrawRay(rayOrigin, Vector2.right * rayLength, Color.green);
-		Debug.DrawRay(rayOrigin, Vector2.left * rayLength, Color.cyan);
+		Debug.DrawRay(rayOrigin, -Vector2.right * rayLength, Color.cyan);
 
 		if (wallHitLeft.distance > 0f) {
 			distanceWallLeft = wallHitLeft.distance;
