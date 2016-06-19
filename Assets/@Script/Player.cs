@@ -88,6 +88,9 @@ public class Player : MonoBehaviour {
 			Color playerColor = GetComponent<SpriteRenderer> ().color;
 			deathParticle.startColor = new Color(playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
 			Instantiate(deathParticle, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
+			gameObject.GetComponent<SpriteRenderer>().enabled = false;
+			gameObject.GetComponent<Controller2D>().enabled = false;
+			gameObject.GetComponent<BoxCollider2D>().enabled = false;
 		}
 	}
 
