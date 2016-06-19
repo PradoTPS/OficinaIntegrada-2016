@@ -15,6 +15,9 @@ public class Player : MonoBehaviour {
 	Controller2D controller;
 	SpriteRenderer spriteRender;
 
+	//THIS PARTICLE WAS MADE BY ME MUAHAHAHAHA
+	public ParticleSystem deathParticle;
+
 	public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
 	public float timeToJumpApex = .4f;
@@ -79,6 +82,14 @@ public class Player : MonoBehaviour {
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
 	}
 		
+	void PlayParticles() {
+		if (curState != "Dead") {
+			Color playerColor = GetComponent<SpriteRenderer> ().color;
+			deathParticle.startColor = new Color(playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
+			Instantiate(deathParticle, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
+		}
+	}
+
 	void Walk(){
 		if (isKeyboard) {
 			input = new Vector2 (KCI.GetAxisRaw (KeyboardAxis.Horizontal, Kcontroller), KCI.GetAxisRaw (KeyboardAxis.Vertical, Kcontroller));
@@ -238,13 +249,14 @@ public class Player : MonoBehaviour {
 
 		otherVertical = controller.verticalLastHit.transform;
 		if (controller.collisions.below && otherVertical.gameObject.tag == "Player") {
-		
-			otherVertical.gameObject.GetComponent<Player> ().curState = "Dead";	
+			otherVertical.gameObject.GetComponent<Player> ().PlayParticles();
+			otherVertical.gameObject.GetComponent<Player> ().curState = "Dead";
 			otherVertical.gameObject.GetComponent<SpriteRenderer> ().color = Color.grey;
 		}	
 	}
 
 	void Update() {
+
 		if (curState != "Dead") {
 			Launching ();
 			if (curState != "Preparation") {
@@ -253,9 +265,9 @@ public class Player : MonoBehaviour {
 				Punch ();
 			}
 		}
-		Death ();
-		//Testing death stuff
 	
+		//Testing death stuff
+		Death ();
 
 	}
 	#endregion
