@@ -83,6 +83,7 @@ public class Player : MonoBehaviour {
 	}
 		
 	void PlayParticles() {
+
 		if (curState != "Dead") {
 			Color playerColor = GetComponent<SpriteRenderer> ().color;
 			deathParticle.startColor = new Color(playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
@@ -158,6 +159,20 @@ public class Player : MonoBehaviour {
 		velocity.y += gravity * Time.deltaTime;
 		controller.Move (velocity * Time.deltaTime, input);
 
+		if (controller.collisions.above || controller.collisions.below) {
+			velocity.y = 0;
+		}
+	}
+
+	void JumpOnEnemy(){
+
+		velocity.x = velocity.x * 1.5f;
+
+		velocity.y = maxJumpVelocity / 1.23f;
+
+		velocity.y += gravity * Time.deltaTime;
+		controller.Move (velocity * Time.deltaTime, input);
+		
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
 		}
@@ -248,11 +263,12 @@ public class Player : MonoBehaviour {
 	void Death(){
 
 		otherVertical = controller.verticalLastHit.transform;
-		if (controller.collisions.below && otherVertical.gameObject.tag == "Player") {
+		if (controller.collisions.below && otherVertical.gameObject.tag == "Player" && otherVertical.GetComponent<Player> ().curState != "Dead") {
 			otherVertical.gameObject.GetComponent<Player> ().PlayParticles();
 			otherVertical.gameObject.GetComponent<Player> ().curState = "Dead";
 			otherVertical.gameObject.GetComponent<SpriteRenderer> ().color = Color.grey;
-		}	
+			JumpOnEnemy();
+		}
 	}
 
 	void Update() {
