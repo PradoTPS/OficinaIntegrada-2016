@@ -54,6 +54,7 @@ public class Player : MonoBehaviour {
 
 	public string curState;
 
+
 	#endregion
 
 	#region Methods
@@ -97,10 +98,13 @@ public class Player : MonoBehaviour {
 	void Walk(){
 		if (isKeyboard) {
 			input = new Vector2 (KCI.GetAxisRaw (KeyboardAxis.Horizontal, Kcontroller), KCI.GetAxisRaw (KeyboardAxis.Vertical, Kcontroller));
+			curState = "Walking";
 		
 		} else {
 			input = new Vector2 (XCI.GetAxisRaw (XboxAxis.LeftStickX, Xcontroller), XCI.GetAxis (XboxAxis.LeftStickY, Xcontroller));
+			curState = "Walking";
 		}
+
 
 	}
 
@@ -112,6 +116,7 @@ public class Player : MonoBehaviour {
 
 		bool wallSliding = false;
 		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.horizontalLastHit.collider.tag != "Player") {
+			curState = "WallSliding";
 			wallSliding = true;
 
 			if (velocity.y < -wallSlideSpeedMax) {
@@ -134,26 +139,29 @@ public class Player : MonoBehaviour {
 		}
 
 		if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown(KeyboardButton.Jump, Kcontroller) && isKeyboard)) {
-			if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown(KeyboardButton.Jump, Kcontroller) && isKeyboard)) {
-				if (wallSliding) {
-					if (wallDirX == input.x) {
-						velocity.x = -wallDirX * wallJumpClimb.x;
-						velocity.y = wallJumpClimb.y;
-					} else if (input.x == 0) {
-						velocity.x = -wallDirX * wallJumpOff.x;
-						velocity.y = wallJumpOff.y;
-					} else {
-						velocity.x = -wallDirX * wallLeap.x;
-						velocity.y = wallLeap.y;
-					}
-				}
-				if (controller.collisions.below) {
-					velocity.y = maxJumpVelocity;
+
+			if (wallSliding) {
+				if (wallDirX == input.x) {
+					velocity.x = -wallDirX * wallJumpClimb.x;
+					velocity.y = wallJumpClimb.y;
+				} else if (input.x == 0) {
+					velocity.x = -wallDirX * wallJumpOff.x;
+					velocity.y = wallJumpOff.y;
+				} else {
+					velocity.x = -wallDirX * wallLeap.x;
+					velocity.y = wallLeap.y;
+					curState = "Jumping";
 				}
 			}
+			if (controller.collisions.below) {
+				velocity.y = maxJumpVelocity;
+				curState = "Jumping";
+			}
 		}
+		
 
 		if ((XCI.GetButtonUp (XboxButton.A, Xcontroller) && !isKeyboard) || (KCI.GetButtonUp(KeyboardButton.Jump, Kcontroller) && isKeyboard)){
+			
 			if (velocity.y > minJumpVelocity) {
 				velocity.y = minJumpVelocity;
 			}
@@ -179,10 +187,12 @@ public class Player : MonoBehaviour {
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
 		}
+		curState = "Kill";
 	}
 
 	void Punch() {
 		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
+			curState = "Pushing";
 			pushing = true;
 			lerpVelocity = 0f;
 			otherHorizontal = controller.horizontalLastHit.transform;
@@ -233,9 +243,10 @@ public class Player : MonoBehaviour {
 			}
 			
 			otherHorizontal.position = Vector3.Lerp (otherHorizontal.position, lerpTarget, perc);
+			curState = "Still";
 		}
 	}
-
+	/*
 	void Launching(){
 		if (isKeyboard) {
 			if (KCI.GetButtonDown (KeyboardButton.Launch, Kcontroller)) {
@@ -262,6 +273,7 @@ public class Player : MonoBehaviour {
 			}
 		}
 	}
+	*/
 
 	void Death(){
 
@@ -275,9 +287,9 @@ public class Player : MonoBehaviour {
 	}
 
 	void Update() {
-
+		Debug.Log (this.gameObject.name + "   " +curState);
 		if (curState != "Dead") {
-			Launching ();
+			//Launching ();
 			if (curState != "Preparation") {
 				Walk ();
 				Jump ();
