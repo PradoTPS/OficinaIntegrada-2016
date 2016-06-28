@@ -53,7 +53,11 @@ public class CameraBehaviour : MonoBehaviour {
 	}
 
 	Vector3 CalculateCameraPosition(Rect boundingBox) {
-		Vector2 boundingBoxCenter = boundingBox.center;
+        Vector2 boundingBoxCenter = Vector2.zero;
+
+		while(boundingBoxCenter != boundingBox.center){
+            boundingBoxCenter += boundingBox.center;
+        }
 
 		return new Vector3 (Mathf.Clamp(boundingBoxCenter.x, minimunBounds.x, maximunBounds.x), Mathf.Clamp(boundingBoxCenter.y, minimunBounds.y, maximunBounds.y), GetComponent<Camera>().transform.position.z);
 	}
