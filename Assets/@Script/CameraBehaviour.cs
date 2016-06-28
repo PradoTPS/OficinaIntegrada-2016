@@ -4,7 +4,10 @@ using System.Collections;
 public class CameraBehaviour : MonoBehaviour {
 	#region Properties
 	Camera usableCamera;
+
 	private Transform[] targets;
+
+    private Vector2 boundingBoxCenter = Vector2.zero;
 
 	public Vector2 minimunBounds;
 	public Vector2 maximunBounds;
@@ -12,20 +15,13 @@ public class CameraBehaviour : MonoBehaviour {
 	public float boundBorder;
 	public float minimumOrthographicSize;
 	public float zoomSpeed;
+    public float positionSpeed;
 	#endregion
 
 	#region Methods
 	void Awake() {
 		usableCamera = GetComponent<Camera> ();
 		usableCamera.orthographic = true;
-
-		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
-		int numberOfPlayers = players.Length;
-
-		targets = new Transform[numberOfPlayers];
-		for (int i = 0; i < numberOfPlayers; i++) {
-			targets [i] = players [i].transform;
-		}
 	}
 
 	void LateUpdate() {
@@ -40,7 +36,7 @@ public class CameraBehaviour : MonoBehaviour {
 		float minY = Mathf.Infinity;
 		float maxY = Mathf.NegativeInfinity;
 
-		foreach (Transform target in targets) {
+		foreach (Transform target in SettingTargets()) {
 			Vector3 position = target.position;
 
 			minX = Mathf.Min (minX, position.x);
@@ -53,11 +49,7 @@ public class CameraBehaviour : MonoBehaviour {
 	}
 
 	Vector3 CalculateCameraPosition(Rect boundingBox) {
-        Vector2 boundingBoxCenter = Vector2.zero;
-
-		while(boundingBoxCenter != boundingBox.center){
-            boundingBoxCenter += boundingBox.center;
-        }
+        boundingBoxCenter = Vector2.Lerp(boundingBoxCenter, boundingBox.center, positionSpeed);
 
 		return new Vector3 (Mathf.Clamp(boundingBoxCenter.x, minimunBounds.x, maximunBounds.x), Mathf.Clamp(boundingBoxCenter.y, minimunBounds.y, maximunBounds.y), GetComponent<Camera>().transform.position.z);
 	}
@@ -75,5 +67,17 @@ public class CameraBehaviour : MonoBehaviour {
 
 		return Mathf.Clamp (Mathf.Lerp (usableCamera.orthographicSize, orthographicSize, Time.deltaTime * zoomSpeed), minimumOrthographicSize, Mathf.Infinity);
 	}
+
+    Transform[] SettingTargets() {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        int numberOfPlayers = players.Length;
+
+        targets = new Transform[numberOfPlayers];
+        for (int i = 0; i < numberOfPlayers; i++)
+        {
+            targets[i] = players[i].transform;
+        }
+        return targets;
+    }
 	#endregion
 }

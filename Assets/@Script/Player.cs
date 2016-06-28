@@ -13,9 +13,7 @@ public class Player : MonoBehaviour {
 	public KeyboardController Kcontroller;
 
 	Controller2D controller;
-	SpriteRenderer spriteRender;
 
-	//THIS PARTICLE WAS MADE BY ME MUAHAHAHAHA
 	public ParticleSystem deathParticle;
 
 	public float maxJumpHeight = 4;
@@ -59,7 +57,6 @@ public class Player : MonoBehaviour {
 	#region Methods
 	void Start() {
 		controller = GetComponent<Controller2D> ();
-		spriteRender = GetComponent<SpriteRenderer> ();
 
 		if(!didQueryNumOfCtrlrs) {
 			didQueryNumOfCtrlrs = true;
@@ -270,7 +267,7 @@ public class Player : MonoBehaviour {
 		if (controller.collisions.below && otherVertical.gameObject.tag == "Player" && otherVertical.GetComponent<Player> ().curState != "Dead") {
 			otherVertical.gameObject.GetComponent<Player> ().PlayParticles();
 			otherVertical.gameObject.GetComponent<Player> ().curState = "Dead";
-			otherVertical.gameObject.GetComponent<SpriteRenderer> ().color = Color.grey;
+            Destroy(otherVertical.gameObject);
 			JumpOnEnemy();
 		}
 
@@ -297,8 +294,8 @@ public class Player : MonoBehaviour {
 				Jump ();
 				Punch ();
 			}
-		}
-	
+        }
+
 		//Testing death stuff
         Limits(10, -8.4f, 8.4f);
 		Death ();

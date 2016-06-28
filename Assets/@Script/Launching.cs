@@ -17,11 +17,11 @@ public class Launching: MonoBehaviour {
 	public float pushForce;
 
 	Player player ;
-	float LaunchForce ;
+	//float LaunchForce ;
 
 	void Start(){
 		player = GetComponentInParent<Player> ();
-		LaunchForce = player.gravity + pushForce;
+		//LaunchForce = player.gravity + pushForce;
 	}
 
 	void setAngle () {
