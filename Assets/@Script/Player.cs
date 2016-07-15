@@ -297,7 +297,7 @@ public class Player : MonoBehaviour {
         }
 
 		//Testing death stuff
-        Limits(10, -8.4f, 8.4f);
+        Limits(8, -8.4f, 8.4f);
 		Death ();
 
 	}

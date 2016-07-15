@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -9,4 +9,4 @@ public class ButtonManager : MonoBehaviour {
 	public void GoTo(){
 		SceneManager.LoadScene (nextScene);
 	}
-}
+}*/

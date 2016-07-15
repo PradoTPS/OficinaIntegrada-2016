@@ -47,12 +47,12 @@ public class GameHandler : MonoBehaviour {
 	}
 
 	IEnumerator fku(){
-		if(txt.text != winner + " is the winner \r\n Fuck You :DDD"){
+		if(txt.text != winner + " is the winner"){
 			txt.text = winner + " is the winner"; 
 		}
 		yield return new WaitForSeconds (1f);
-		if(txt.text != winner + " is the winner \r\n Fuck You :DDD"){
-			txt.text +=" \r\n Fuck You :DDD"; 
+		if(txt.text != winner + " is the winner"){
+			txt.text +=""; 
 		}
 	}
 
