@@ -1,4 +1,4 @@
-﻿/*using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor.SceneManagement;
 using System.Collections;
 
@@ -25,4 +25,4 @@ public class KeepVideo : MonoBehaviour {
 			Destroy (gameObject);
 		}
 	}
-}*/
+}

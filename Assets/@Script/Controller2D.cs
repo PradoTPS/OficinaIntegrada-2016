@@ -214,34 +214,28 @@ public class Controller2D : RaycastController {
 
 	void WallCheck(ref Vector3 velocity) {
 		float rayLength = Mathf.Abs (velocity.x) + 1.5f + transform.GetComponent<Renderer>().bounds.size.x/2;
-		Vector2 rayOrigin = transform.position;
-		RaycastHit2D wallHitRight = Physics2D.Raycast (rayOrigin, Vector2.right, rayLength, collisionMask);
-		RaycastHit2D wallHitLeft = Physics2D.Raycast (rayOrigin, -Vector2.right, rayLength, collisionMask);
-		if (Mathf.Abs(velocity.x) < skinWidth) {
-			rayLength = 2*skinWidth;
-		}
+		Vector2 rayOrigin = new Vector3 (transform.position.x, transform.position.y + transform.GetComponent<Renderer> ().bounds.size.y / 2, transform.position.z);
 
+		for (int i = 0; i < 3; i++) {
+			RaycastHit2D wallHitRight = Physics2D.Raycast (rayOrigin, Vector2.right, rayLength, collisionMask);
+			RaycastHit2D wallHitLeft = Physics2D.Raycast (rayOrigin, -Vector2.right, rayLength, collisionMask);
 
-		Debug.DrawRay(rayOrigin, Vector2.right * rayLength, Color.green);
-		Debug.DrawRay(rayOrigin, -Vector2.right * rayLength, Color.cyan);
+			if (Mathf.Abs (velocity.x) < skinWidth) {
+				rayLength = 2 * skinWidth;
+			}
 
-		if (wallHitLeft.distance > 0f) {
+			Debug.DrawRay (rayOrigin, Vector2.right * rayLength, Color.green);
+			Debug.DrawRay (rayOrigin, -Vector2.right * rayLength, Color.cyan);
+
 			distanceWallLeft = wallHitLeft.distance;
-
-		}
-
-		if (wallHitRight.distance > 0f) {
 			distanceWallRight = wallHitRight.distance;
 
+			rayOrigin.y = rayOrigin.y - transform.GetComponent<Renderer> ().bounds.size.y / 2;
 		}
 	}
 
 	void ResetFallingThroughPlatform() {
 		collisions.fallingThroughPlatform = false;
-	}
-
-	void Update(){
-		
 	}
 	#endregion
 

@@ -45,6 +45,7 @@ public class Player : MonoBehaviour {
 	public Transform otherVertical;
 	public bool pushing = false;
 	public float distance = 0;
+	private Transform enemyPlayer;
 	private float lerpVelocity = 0;
 	private float inittial;
 	private float final;
@@ -183,31 +184,37 @@ public class Player : MonoBehaviour {
 		if (((XCI.GetButtonDown (XboxButton.X, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller) && isKeyboard)) && controller.interPlayersCollision) {
 			pushing = true;
 			lerpVelocity = 0f;
-			otherHorizontal = controller.horizontalLastHit.transform;
-			inittial = otherHorizontal.position.x;
+			enemyPlayer = controller.horizontalLastHit.transform;
+			inittial = enemyPlayer.position.x;
 			distance = 1.5f;
 
 			if (transform.position.x > inittial) {
-				if (otherHorizontal.GetComponent<Controller2D> ().distanceWallLeft - otherHorizontal.GetComponent<Renderer>().bounds.size.x/2 < distance) {
-					distance = otherHorizontal.GetComponent<Controller2D> ().distanceWallLeft - otherHorizontal.GetComponent<Renderer>().bounds.size.x/2;
+				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 < distance) {
+					distance = enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2;
 				}
-				if (otherHorizontal.GetComponent<Controller2D> ().distanceWallLeft <= otherHorizontal.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
+				if ((enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft <= enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) && (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft != 0)) {
 					distance = 0f;
+				}
+				if(enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft == 0){
+					distance = 1.5f;
 				}
 				distance *= -1;
 			} else {
-				if (otherHorizontal.GetComponent<Controller2D> ().distanceWallRight - otherHorizontal.GetComponent<Renderer>().bounds.size.x/2 < distance) {
-					distance = otherHorizontal.GetComponent<Controller2D> ().distanceWallRight - otherHorizontal.GetComponent<Renderer>().bounds.size.x/2;
+				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 < distance) {
+					distance = enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2;
 				}
-				if (otherHorizontal.GetComponent<Controller2D> ().distanceWallRight <= otherHorizontal.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
+				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallRight <= enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
 					distance = 0f;
+				}
+				if(enemyPlayer.GetComponent<Controller2D> ().distanceWallRight == 0){
+					distance = 1.5f;
 				}
 				distance *= 1;
 			}
 
 			final = inittial + distance;
 				
-			lerpTarget = new Vector3 (final, otherHorizontal.position.y, otherHorizontal.position.z);
+			lerpTarget = new Vector3 (final, enemyPlayer.position.y, enemyPlayer.position.z);
 		}
 
 		if (pushing) {
@@ -219,18 +226,18 @@ public class Player : MonoBehaviour {
 			float perc = lerpVelocity / 1f;
 
 			if (distance >= 0f) {
-				if (otherHorizontal.position.x >= final || perc == 1f) {
+				if (enemyPlayer.position.x >= final || perc == 1f) {
 					pushing = false;
 					distance = 0;
 				}
 			} else {
-				if (otherHorizontal.position.x <= final || perc == 1f) {
+				if (enemyPlayer.position.x <= final || perc == 1f) {
 					pushing = false;
 					distance = 0;
 				}
 			}
 			
-			otherHorizontal.position = Vector3.Lerp (otherHorizontal.position, lerpTarget, perc);
+			enemyPlayer.position = Vector3.Lerp (enemyPlayer.position, lerpTarget, perc);
 		}
 	}
 
