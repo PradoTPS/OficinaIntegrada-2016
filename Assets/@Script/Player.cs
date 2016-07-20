@@ -81,7 +81,6 @@ public class Player : MonoBehaviour {
 	}
 		
 	void PlayParticles() {
-
 		if (curState != "Dead") {
 			Color playerColor = GetComponent<SpriteRenderer> ().color;
 			deathParticle.startColor = new Color(playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
@@ -167,7 +166,6 @@ public class Player : MonoBehaviour {
 	}
 
 	void JumpOnEnemy(){
-
 		velocity.x = velocity.x * 1.5f;
 
 		velocity.y = maxJumpVelocity / 1.23f;
@@ -189,24 +187,24 @@ public class Player : MonoBehaviour {
 			distance = 1.5f;
 
 			if (transform.position.x > inittial) {
-				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 < distance) {
-					distance = enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2;
+				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<Renderer> ().bounds.size.x / 2 < distance) {
+					distance = enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<Renderer> ().bounds.size.x / 2;
 				}
-				if ((enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft <= enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) && (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft != 0)) {
+				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft <= enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
 					distance = 0f;
 				}
-				if(enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft == 0){
+				if((enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft == 0) && (enemyPlayer.GetComponent<Controller2D> ().colliderLeft == null)){
 					distance = 1.5f;
 				}
 				distance *= -1;
 			} else {
-				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 < distance) {
+				if ((enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 < distance) ) {
 					distance = enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2;
 				}
 				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallRight <= enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
 					distance = 0f;
 				}
-				if(enemyPlayer.GetComponent<Controller2D> ().distanceWallRight == 0){
+				if((enemyPlayer.GetComponent<Controller2D> ().distanceWallRight == 0) && (enemyPlayer.GetComponent<Controller2D> ().colliderRight == null)){
 					distance = 1.5f;
 				}
 				distance *= 1;

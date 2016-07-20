@@ -14,6 +14,12 @@ public class Controller2D : RaycastController {
 	public Vector2 playerInput;
 
 	[HideInInspector]
+	public Collider2D colliderLeft;
+
+	[HideInInspector]
+	public Collider2D colliderRight;
+
+	[HideInInspector]
 	public float distanceWallRight;
 
 	[HideInInspector]
@@ -24,7 +30,6 @@ public class Controller2D : RaycastController {
 
 	private float maxClimbAngle = 80;
 	private float maxDescendAngle = 80;
-	private Vector3 v;
 	#endregion
 
 	#region Methods
@@ -42,7 +47,6 @@ public class Controller2D : RaycastController {
 		collisions.Reset ();
 		collisions.velocityOld = velocity;
 		playerInput = input;
-		v = velocity;
 
 		if (velocity.x != 0) {
 			collisions.faceDir = (int)Mathf.Sign(velocity.x);
@@ -62,7 +66,6 @@ public class Controller2D : RaycastController {
 		if (standingOnPlatform) {
 			collisions.below = true;
 		}
-		WallCheck(ref v);
 	}
 
 	void HorizontalCollisions(ref Vector3 velocity) {
@@ -212,30 +215,33 @@ public class Controller2D : RaycastController {
 		}
 	}
 
-	void WallCheck(ref Vector3 velocity) {
-		float rayLength = Mathf.Abs (velocity.x) + 1.5f + transform.GetComponent<Renderer>().bounds.size.x/2;
-		Vector2 rayOrigin = new Vector3 (transform.position.x, transform.position.y + transform.GetComponent<Renderer> ().bounds.size.y / 2, transform.position.z);
+	void WallCheck() {
+		float rayLength = 1.5f + transform.GetComponent<Renderer>().bounds.size.x/2;
+		Vector2 rayOrigin = new Vector3 (transform.position.x, transform.position.y + transform.GetComponent<Renderer> ().bounds.size.y/2 - 0.1f, transform.position.z);
 
 		for (int i = 0; i < 3; i++) {
 			RaycastHit2D wallHitRight = Physics2D.Raycast (rayOrigin, Vector2.right, rayLength, collisionMask);
 			RaycastHit2D wallHitLeft = Physics2D.Raycast (rayOrigin, -Vector2.right, rayLength, collisionMask);
 
-			if (Mathf.Abs (velocity.x) < skinWidth) {
-				rayLength = 2 * skinWidth;
-			}
-
 			Debug.DrawRay (rayOrigin, Vector2.right * rayLength, Color.green);
 			Debug.DrawRay (rayOrigin, -Vector2.right * rayLength, Color.cyan);
+
+			colliderLeft = wallHitLeft.collider;
+			colliderRight = wallHitRight.collider;
 
 			distanceWallLeft = wallHitLeft.distance;
 			distanceWallRight = wallHitRight.distance;
 
-			rayOrigin.y = rayOrigin.y - transform.GetComponent<Renderer> ().bounds.size.y / 2;
+			rayOrigin.y = rayOrigin.y - transform.GetComponent<Renderer> ().bounds.size.y/2 + 0.1f;
 		}
 	}
 
 	void ResetFallingThroughPlatform() {
 		collisions.fallingThroughPlatform = false;
+	}
+
+	void Update(){
+		WallCheck();
 	}
 	#endregion
 
