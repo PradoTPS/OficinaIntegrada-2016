@@ -9,11 +9,10 @@ public class CameraBehaviour : MonoBehaviour {
 
     private Vector2 boundingBoxCenter = Vector2.zero;
 
-	public Vector2 minimunBounds;
-	public Vector2 maximunBounds;
+	public Vector2 minimunBounds, maximunBounds;
 
 	public float boundBorder;
-	public float minimumOrthographicSize;
+	public float minimumOrthographicSize, maximunOrthographicSize;
 	public float zoomSpeed;
     public float positionSpeed;
 	#endregion
@@ -65,7 +64,7 @@ public class CameraBehaviour : MonoBehaviour {
 			orthographicSize = Mathf.Abs (boundingBox.height) / 2f;
 		}
 
-		return Mathf.Clamp (Mathf.Lerp (usableCamera.orthographicSize, orthographicSize, Time.deltaTime * zoomSpeed), minimumOrthographicSize, Mathf.Infinity);
+		return Mathf.Clamp (Mathf.Lerp (usableCamera.orthographicSize, orthographicSize, Time.deltaTime * zoomSpeed), minimumOrthographicSize, maximunOrthographicSize);
 	}
 
     Transform[] SettingTargets() {
