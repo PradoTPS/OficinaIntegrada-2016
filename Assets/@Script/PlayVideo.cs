@@ -2,9 +2,11 @@
 using System.Collections;
 
 public class PlayVideo : MonoBehaviour {
-	
+	#region Properties
 	public MovieTexture video;
+	#endregion
 
+	#region Methods
 	void Awake() {
 		GetComponent<Renderer>().material.mainTexture = video;
 		video.loop = true;
@@ -19,4 +21,5 @@ public class PlayVideo : MonoBehaviour {
 			video.Play ();
 		}
 	}
+	#endregion
 }

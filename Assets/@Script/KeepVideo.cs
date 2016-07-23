@@ -3,7 +3,7 @@ using UnityEditor.SceneManagement;
 using System.Collections;
 
 public class KeepVideo : MonoBehaviour {
-
+	#region Methods
 	void Start(){
 		KeepOne ();
 	}
@@ -25,4 +25,5 @@ public class KeepVideo : MonoBehaviour {
 			Destroy (gameObject);
 		}
 	}
+	#endregion
 }
