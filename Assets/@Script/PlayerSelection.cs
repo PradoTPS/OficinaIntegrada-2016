@@ -6,14 +6,15 @@ using KeyboardInput;
 public class PlayerSelection : MonoBehaviour {
 
 	#region Properties
-	public GameObject selectable1, selectable2, selectable3, selectable4;
-	#endregion
+	public XboxController Xcontroller;
+	public KeyboardController Kcontroller;
 
+	public bool isSet = false;
+	#endregion
+	
 	#region Methods
-	void GettingReady(){
-		if(XCI.GetButtonDown (XboxButton.A, XboxController.All) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)){
-			
-		}
+	void Awake(){
+
 	}
 	#endregion
 }

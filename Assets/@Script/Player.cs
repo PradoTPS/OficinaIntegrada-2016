@@ -286,8 +286,6 @@ public class Player : MonoBehaviour {
         if (controller.collisions.below && otherVertical.gameObject.tag == "Bottom") { transform.position = new Vector2(transform.position.x, top); }
         if (controller.collisions.left && otherHorizontal.gameObject.tag == "Left") { transform.position = new Vector2(right, transform.position.y); }
         if (controller.collisions.right && otherHorizontal.gameObject.tag == "Right") { transform.position = new Vector2(left, transform.position.y); }
-
-
     }
 
 	void Update() {

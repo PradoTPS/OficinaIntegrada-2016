@@ -45,6 +45,7 @@ public class GameHandler : MonoBehaviour {
 	}
 
 	IEnumerator fku(){
+		txt.transform.parent = Camera.main.transform;
 		if(txt.text != winner + " is the winner"){
 			txt.text = winner + " is the winner"; 
 		}
