@@ -10,11 +10,13 @@ public class PlayerSelection : MonoBehaviour {
 	public KeyboardController Kcontroller;
 
 	public bool isSet = false;
+	public bool isKeyboard;
 	#endregion
 	
 	#region Methods
-	void Awake(){
-
+	void Update(){
+		if (isSet)
+			gameObject.GetComponent<SpriteRenderer> ().enabled = true;
 	}
 	#endregion
 }
