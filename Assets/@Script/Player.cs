@@ -243,11 +243,6 @@ public class Player : MonoBehaviour {
 	}
 
 	void AnimationHandling(){
-		//Animation Int Numbers 
-		// 1 - Idle
-		// 2 - Jumping
-		// 3 - Airborn
-
 		if (controller.collisions.below) {
 			anim.SetBool ("Grounded", true);
 		} else {
@@ -260,19 +255,7 @@ public class Player : MonoBehaviour {
 			this.transform.localScale = new Vector3 (this.lastDir, 1, 1);
 			curState = "Idle";
 		}
-
-		switch (curState) {
-		case "Idle":
-			anim.SetInteger ("Animation Int", 1);
-			break;
-		case "Jump":
-			anim.SetInteger ("Animation Int", 2);
-			break;
-		case "Air":
-			anim.SetInteger("Animation Int" ,3);
-			break;
-		
-		}
+			
 	}
 		
 
