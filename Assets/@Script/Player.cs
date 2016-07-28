@@ -94,9 +94,8 @@ public class Player : MonoBehaviour {
 	void Walk(){
 		if (isKeyboard) {
 			input = new Vector2 (KCI.GetAxisRaw (KeyboardAxis.Horizontal, Kcontroller), KCI.GetAxisRaw (KeyboardAxis.Vertical, Kcontroller));
-		
 		} else {
-			input = new Vector2 (XCI.GetAxisRaw (XboxAxis.LeftStickX, Xcontroller), XCI.GetAxis (XboxAxis.LeftStickY, Xcontroller));
+			input = new Vector2 (XCI.GetAxisRaw (XboxAxis.LeftStickX, Xcontroller), XCI.GetAxisRaw (XboxAxis.LeftStickY, Xcontroller));
 		}
 
 	}

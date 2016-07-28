@@ -2,7 +2,11 @@
 using UnityEditor.SceneManagement;
 using System.Collections;
 
-public class KeepVideo : MonoBehaviour {
+public class KeepAlive : MonoBehaviour {
+	#region Properties
+	public string tagName;
+	#endregion
+
 	#region Methods
 	void Start(){
 		KeepOne ();
@@ -21,7 +25,7 @@ public class KeepVideo : MonoBehaviour {
 	}
 
 	void KeepOne(){
-		if (GameObject.FindGameObjectsWithTag ("Video").Length > 1) {
+		if (GameObject.FindGameObjectsWithTag (tagName).Length > 1) {
 			Destroy (gameObject);
 		}
 	}

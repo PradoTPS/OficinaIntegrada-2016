@@ -1,30 +1,70 @@
 ﻿using UnityEngine;
 using System.Collections;
+using XboxCtrlrInput;
+using KeyboardInput;
 
 public class Spawning : MonoBehaviour {
 	#region Properties
-	private GameObject[] spawners;
-	private GameObject p1, p2, p3, p4;
-	public GameObject player1, player2, player3, player4;
+	private GameObject[] spawners = new GameObject[4];
+	public GameObject[] players;
 	public GameObject playersLayer;
 	#endregion
 
 	#region Methods
 	void Awake(){
-		spawners = GameObject.FindGameObjectsWithTag ("Spawn");
+		for (int i = 0; i < spawners.Length; i++) {
+			spawners [i] = GameObject.Find ("Spawner" + (i + 1).ToString ());
+		}
 		Spawn ();
 	}
 
 	void Spawn(){
-		p1 = Instantiate (player1, spawners [0].transform.position, Quaternion.identity) as GameObject;
-		p2 = Instantiate (player2, spawners [1].transform.position, Quaternion.identity) as GameObject;
-		p3 = Instantiate (player3, spawners [2].transform.position, Quaternion.identity) as GameObject;
-		p4 = Instantiate (player4, spawners [3].transform.position, Quaternion.identity) as GameObject;
+		for (int i = 0; i < spawners.Length; i++) {
+			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none" && PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "Random") {
+				GameObject instance = Instantiate (players[(int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7)) - 1)], spawners [i].transform.position, Quaternion.identity) as GameObject;
+				instance.transform.parent = playersLayer.transform;
+				Debug.Log (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7));
+				SetControll ("Player " + (i + 1).ToString (), instance);
+			} else if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) == "Random") {
+				GameObject instance = Instantiate (players[Random.Range(1,5)], spawners [i].transform.position, Quaternion.identity) as GameObject;
+				instance.transform.parent = playersLayer.transform;
+				SetControll ("Player " + (i + 1).ToString (), instance);
+			}
+		}
+	}
 
-		p1.transform.parent = playersLayer.transform;
-		p2.transform.parent = playersLayer.transform;
-		p3.transform.parent = playersLayer.transform;
-		p4.transform.parent = playersLayer.transform;
+	void SetControll(string key, GameObject player){
+		if (PlayerPrefs.GetString(key + " isKeyboard") == "true") {
+			switch (PlayerPrefs.GetInt(key + " Controller")) {
+				case 1:
+					player.GetComponent<Player> ().isKeyboard = true;
+					player.GetComponent<Player> ().Kcontroller = KeyboardController.First;
+					break;
+				case 2:
+					player.GetComponent<Player> ().isKeyboard = true;
+					player.GetComponent<Player> ().Kcontroller = KeyboardController.Second;
+					break;
+			}
+		} else {
+			switch (PlayerPrefs.GetInt(key + " Controller")) {
+				case 1:
+					player.GetComponent<Player> ().isKeyboard = false;
+					player.GetComponent<Player> ().Xcontroller = XboxController.First;
+					break;
+				case 2:
+					player.GetComponent<Player> ().isKeyboard = false;
+					player.GetComponent<Player> ().Xcontroller = XboxController.Second;
+					break;
+				case 3:
+					player.GetComponent<Player> ().isKeyboard = false;
+					player.GetComponent<Player> ().Xcontroller = XboxController.Third;
+					break;
+				case 4:
+					player.GetComponent<Player> ().isKeyboard = false;
+					player.GetComponent<Player> ().Xcontroller = XboxController.Fourth;
+					break;
+			}
+		}
 	}
 	#endregion
 }
