@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
 	public KeyboardController Kcontroller;
 
 	Controller2D controller;
+	Animator anim;
 
 	public ParticleSystem deathParticle;
 
@@ -52,12 +53,14 @@ public class Player : MonoBehaviour {
 
 
 	public string curState;
+	public float lastDir = 1;
 
 	#endregion
 
 	#region Methods
 	void Start() {
 		controller = GetComponent<Controller2D> ();
+		anim = GetComponent<Animator> ();
 
 		if(!didQueryNumOfCtrlrs) {
 			didQueryNumOfCtrlrs = true;
@@ -74,7 +77,7 @@ public class Player : MonoBehaviour {
 			XCI.DEBUG_LogControllerNames();
 		}
 
-			
+		curState= "Idle";
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
@@ -145,6 +148,7 @@ public class Player : MonoBehaviour {
 					}
 				}
 				if (controller.collisions.below) {
+					curState = "Air";
 					velocity.y = maxJumpVelocity;
 				}
 			}
@@ -238,32 +242,39 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void Launching(){
-		if (isKeyboard) {
-			if (KCI.GetButtonDown (KeyboardButton.Launch, Kcontroller)) {
-				if (controller.collisions.below && curState != "Preparation") {
-					curState = "Preparation";
-				}
-			} 
-			if (KCI.GetButtonUp (KeyboardButton.Launch, Kcontroller)) {
-				if (curState == "Preparation") {
-					curState = "Still";
-				}
-			}
+	void AnimationHandling(){
+		//Animation Int Numbers 
+		// 1 - Idle
+		// 2 - Jumping
+		// 3 - Airborn
+
+		if (controller.collisions.below) {
+			anim.SetBool ("Grounded", true);
 		} else {
-			if (XCI.GetButtonDown (XboxButton.B, Xcontroller)) {
-				if (controller.collisions.below && curState != "Preparation") {
-					curState = "Preparation";
-				}
-			} 
-			if (XCI.GetButtonUp (XboxButton.B, Xcontroller)) {
-				if (curState == "Preparation") {
-					curState = "Still";
-				
-				}
-			}
+			anim.SetBool ("Grounded", false);
+		}
+		if (this.input.x != 0) {
+			this.transform.localScale = new Vector3 (input.x, 1, 1);
+			this.lastDir = input.x;
+		} else {
+			this.transform.localScale = new Vector3 (this.lastDir, 1, 1);
+			curState = "Idle";
+		}
+
+		switch (curState) {
+		case "Idle":
+			anim.SetInteger ("Animation Int", 1);
+			break;
+		case "Jump":
+			anim.SetInteger ("Animation Int", 2);
+			break;
+		case "Air":
+			anim.SetInteger("Animation Int" ,3);
+			break;
+		
 		}
 	}
+		
 
 	void Death(){
 
@@ -288,20 +299,19 @@ public class Player : MonoBehaviour {
     }
 
 	void Update() {
-
+		
 		if (curState != "Dead") {
-			Launching ();
-			if (curState != "Preparation") {
-				Walk ();
-				Jump ();
-				Punch ();
-			}
+
+			Walk ();
+			Jump ();
+			Punch ();
+			AnimationHandling ();
         }
 
 		//Testing death stuff
         Limits(8, -8.4f, 8.4f);
 		Death ();
-
 	}
+
 	#endregion
 } 
