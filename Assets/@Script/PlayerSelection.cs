@@ -126,9 +126,12 @@ public class PlayerSelection : MonoBehaviour {
 		}
 	}
 
-	void Update(){
+	void FixedUpdate(){
 		Passing ();
 		Choosing ();
+	}
+
+	void LateUpdate(){
 		Unchoosing ();
 	}
 	#endregion

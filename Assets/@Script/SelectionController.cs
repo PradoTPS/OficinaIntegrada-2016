@@ -33,7 +33,7 @@ public class SelectionController : MonoBehaviour {
 		}
 	}
 
-	void Selecting(GameObject selected){
+	public void Selecting(GameObject selected){
 		for (int i = 0; i < ableXboxList.Count; i++) {
 			if (XCI.GetButtonDown (XboxButton.A, ableXboxList[i])) {
 				ControlSet (selected, ableXboxList [i]);
@@ -118,14 +118,7 @@ public class SelectionController : MonoBehaviour {
 		}
 	}
 
-	void Update(){
-		for (int i = 0; i < selectables.Length; i++) {
-			if (!selectables [i].GetComponent<PlayerSelection> ().isSet) {
-				Selecting(selectables[i]);
-				break;
-			}
-		}
-
+	void FixedUpdate(){
 		for (int i = 0; i < selectables.Length; i++) {
 			if (!selectables [i].GetComponent<PlayerSelection> ().ready) {
 				Deselecting (selectables [i]);
@@ -133,6 +126,15 @@ public class SelectionController : MonoBehaviour {
 		}
 
 		ReadyVerifier ();
+	}
+
+	void LateUpdate(){
+		for (int i = 0; i < selectables.Length; i++) {
+			if (!selectables [i].GetComponent<PlayerSelection> ().isSet) {
+				Selecting(selectables[i]);
+				break;
+			}
+		}
 	}
 	#endregion
 }

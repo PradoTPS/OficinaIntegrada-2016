@@ -23,7 +23,6 @@ public class Spawning : MonoBehaviour {
 			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none" && PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "Random") {
 				GameObject instance = Instantiate (players[(int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7)) - 1)], spawners [i].transform.position, Quaternion.identity) as GameObject;
 				instance.transform.parent = playersLayer.transform;
-				Debug.Log (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7));
 				SetControll ("Player " + (i + 1).ToString (), instance);
 			} else if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) == "Random") {
 				GameObject instance = Instantiate (players[Random.Range(1,5)], spawners [i].transform.position, Quaternion.identity) as GameObject;
