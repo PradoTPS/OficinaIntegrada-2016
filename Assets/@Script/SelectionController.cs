@@ -66,6 +66,7 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().isSet = true;
 		selected.GetComponent<PlayerSelection> ().isKeyboard = false;
 		selected.GetComponent<SpriteRenderer> ().enabled = true;
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = true;
 		ableXboxList.Remove (xbxCtrl);
 		enableXboxList.Add (xbxCtrl);
 	}
@@ -76,6 +77,7 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().isSet = true;
 		selected.GetComponent<PlayerSelection> ().isKeyboard = true;
 		selected.GetComponent<SpriteRenderer> ().enabled = true;
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = true;
 		ableKeyboardList.Remove (kbrdCtrl);
 		enableKeyboardList.Add (kbrdCtrl);
 	}
@@ -85,6 +87,8 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().isSet = false;
 		selected.GetComponent<SpriteRenderer> ().enabled = false;
 		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().playersToChoose [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = false;
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = selected.GetComponent<PlayerSelection> ().arrows [0];
 		enableXboxList.Remove (xbxCtrl);
 		ableXboxList.Add (xbxCtrl);
 	}
@@ -95,6 +99,8 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<SpriteRenderer> ().enabled = false;
 		selected.GetComponent<PlayerSelection> ().isKeyboard = false;
 		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().playersToChoose [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = false;
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = selected.GetComponent<PlayerSelection> ().arrows [0];
 		enableKeyboardList.Remove (kbrdCtrl);
 		ableKeyboardList.Add (kbrdCtrl);
 	}

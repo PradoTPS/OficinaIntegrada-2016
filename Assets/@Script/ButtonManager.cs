@@ -14,7 +14,13 @@ public class ButtonManager : MonoBehaviour {
 
 	#region Methods
 	public void GoTo(){
-		SceneManager.LoadScene (nextScene);
+		if (SceneManager.GetActiveScene ().name != "CharactersSelection") {
+			SceneManager.LoadScene (nextScene);
+		} else {
+			if(GameObject.Find("SelectionHandler").GetComponent<CountingToGame>().canPlay){
+				SceneManager.LoadScene (nextScene);
+			}
+		}
 	}
 
 	void Update(){
