@@ -27,8 +27,8 @@ public class GameHandler : MonoBehaviour {
 	void Update(){
 		WinnerCheck ();
 		if (alive.Count == 1) {
-			winner = alive [0].gameObject.name;
-			StartCoroutine(fku ());
+			winner = alive [0].gameObject.name.Remove(8).ToString();
+			StartCoroutine(callWinner ());
 
 			if (!src.isPlaying) {
 				src.Play ();
@@ -44,7 +44,7 @@ public class GameHandler : MonoBehaviour {
 		}
 	}
 
-	IEnumerator fku(){
+	IEnumerator callWinner(){
 		txt.transform.parent = Camera.main.transform;
 		if(txt.text != winner + " is the winner"){
 			txt.text = winner + " is the winner"; 
