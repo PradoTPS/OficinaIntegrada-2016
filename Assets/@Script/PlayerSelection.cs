@@ -5,7 +5,6 @@ using XboxCtrlrInput;
 using KeyboardInput;
 
 public class PlayerSelection : MonoBehaviour {
-
 	#region Properties
 	public XboxController Xcontroller;
 	public KeyboardController Kcontroller;

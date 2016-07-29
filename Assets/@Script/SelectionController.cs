@@ -5,7 +5,6 @@ using XboxCtrlrInput;
 using KeyboardInput;
 
 public class SelectionController : MonoBehaviour {
-
 	#region Properties
 	[HideInInspector]
 	public bool nobodyReady;
