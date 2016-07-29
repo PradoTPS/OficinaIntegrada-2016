@@ -51,9 +51,13 @@ public class Player : MonoBehaviour {
 	private float inittial;
 	private float final;
 
+	public float upSpeed;
 
 	public string curState;
+	public bool onWall;
 	public float lastDir = 1;
+	public bool jumpButton = false;
+
 
 	#endregion
 
@@ -110,9 +114,11 @@ public class Player : MonoBehaviour {
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 
 		bool wallSliding = false;
+		onWall = wallSliding;
         if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.horizontalLastHit.collider.tag != "Player" && controller.horizontalLastHit.collider.tag != "Slideless")
         {
 			wallSliding = true;
+			onWall = wallSliding;
 
 			if (velocity.y < -wallSlideSpeedMax) {
 				velocity.y = -wallSlideSpeedMax;
@@ -147,6 +153,9 @@ public class Player : MonoBehaviour {
 						velocity.y = wallLeap.y;
 					}
 				}
+
+				jumpButton = true;
+
 				if (controller.collisions.below) {
 					curState = "Air";
 					velocity.y = maxJumpVelocity;
@@ -155,6 +164,8 @@ public class Player : MonoBehaviour {
 		}
 
 		if ((XCI.GetButtonUp (XboxButton.A, Xcontroller) && !isKeyboard) || (KCI.GetButtonUp(KeyboardButton.Jump, Kcontroller) && isKeyboard)){
+			
+			jumpButton = false;
 			if (velocity.y > minJumpVelocity) {
 				velocity.y = minJumpVelocity;
 			}
@@ -243,11 +254,23 @@ public class Player : MonoBehaviour {
 	}
 
 	void AnimationHandling(){
+		anim.SetBool ("Wall", onWall);
+
+		#region Input animations
+		if (isKeyboard) {
+			anim.SetBool ("JumpButton", jumpButton);
+		} else {
+			anim.SetBool ("JumpButton", jumpButton);
+		}
+		#endregion
+		#region Grounded Animation
 		if (controller.collisions.below) {
 			anim.SetBool ("Grounded", true);
 		} else {
 			anim.SetBool ("Grounded", false);
 		}
+		#endregion
+		#region Movement Animations
 		if (this.input.x != 0) {
 			this.transform.localScale = new Vector3 (input.x, 1, 1);
 			this.lastDir = input.x;
@@ -255,6 +278,7 @@ public class Player : MonoBehaviour {
 			this.transform.localScale = new Vector3 (this.lastDir, 1, 1);
 			curState = "Idle";
 		}
+		#endregion
 			
 	}
 		
@@ -294,6 +318,9 @@ public class Player : MonoBehaviour {
 		//Testing death stuff
         Limits(8, -8.4f, 8.4f);
 		Death ();
+	}
+	void FixedUpdate(){
+		
 	}
 
 	#endregion
