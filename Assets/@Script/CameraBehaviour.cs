@@ -25,7 +25,7 @@ public class CameraBehaviour : MonoBehaviour {
 
 	void LateUpdate() {
 		Rect boundingBox = CalculateTargetsBoundingBox ();
-		transform.position = CalculateCameraPosition (boundingBox);
+		this.transform.position = CalculateCameraPosition (boundingBox);
 		usableCamera.orthographicSize = CalculateOrthographicSize (boundingBox);
 	}
 
