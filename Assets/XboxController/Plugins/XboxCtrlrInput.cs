@@ -894,7 +894,9 @@ namespace XboxCtrlrInput
 				r = Input.GetAxisRaw(axisCode);
 				r = AdjustAxisValues(r, axis, controllerNumber);
 			}
-				
+
+			if (r > 0f){ r = 1f; } else if(r < 0f){ r = -1f; } else { r = 0f; }
+
 			return r;
 		}
 		

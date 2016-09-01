@@ -104,7 +104,6 @@ public class Player : MonoBehaviour {
 		} else {
 			input = new Vector2 (XCI.GetAxisRaw (XboxAxis.LeftStickX, Xcontroller), XCI.GetAxisRaw (XboxAxis.LeftStickY, Xcontroller));
 		}
-
 	}
 
 	void Jump(){
@@ -306,7 +305,6 @@ public class Player : MonoBehaviour {
     }
 
 	void Update() {
-		
 		if (curState != "Dead") {
 
 			Walk ();
@@ -319,9 +317,5 @@ public class Player : MonoBehaviour {
         Limits(8, -8.4f, 8.4f);
 		Death ();
 	}
-	void FixedUpdate(){
-		
-	}
-
 	#endregion
 } 
