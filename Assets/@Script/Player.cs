@@ -57,8 +57,6 @@ public class Player : MonoBehaviour {
 	public bool onWall;
 	public float lastDir = 1;
 	public bool jumpButton = false;
-
-
 	#endregion
 
 	#region Methods
@@ -200,21 +198,22 @@ public class Player : MonoBehaviour {
 			distance = 1.5f;
 
 			if (transform.position.x > inittial) {
-				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<Renderer> ().bounds.size.x / 2 < distance) {
-					distance = enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<Renderer> ().bounds.size.x / 2;
+				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<BoxCollider2D> ().bounds.size.x / 2 < distance) {
+					distance = enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft - enemyPlayer.GetComponent<BoxCollider2D> ().bounds.size.x / 2;
 				}
-				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft <= enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
+				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft <= enemyPlayer.GetComponent<BoxCollider2D>().bounds.size.x/2) {
 					distance = 0f;
 				}
 				if((enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft == 0) && (enemyPlayer.GetComponent<Controller2D> ().colliderLeft == null)){
 					distance = 1.5f;
 				}
+				Debug.LogFormat("distanceWallLeft: {0}, size: {1}", enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft, enemyPlayer.GetComponent<BoxCollider2D>().bounds.size.x/2);
 				distance *= -1;
 			} else {
-				if ((enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 < distance) ) {
-					distance = enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<Renderer>().bounds.size.x/2;
+				if ((enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<BoxCollider2D>().bounds.size.x/2 < distance) ) {
+					distance = enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<BoxCollider2D>().bounds.size.x/2;
 				}
-				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallRight <= enemyPlayer.GetComponent<Renderer>().bounds.size.x/2 + 0.1f) {
+				if (enemyPlayer.GetComponent<Controller2D> ().distanceWallRight <= enemyPlayer.GetComponent<BoxCollider2D>().bounds.size.x/2) {
 					distance = 0f;
 				}
 				if((enemyPlayer.GetComponent<Controller2D> ().distanceWallRight == 0) && (enemyPlayer.GetComponent<Controller2D> ().colliderRight == null)){
@@ -222,9 +221,9 @@ public class Player : MonoBehaviour {
 				}
 				distance *= 1;
 			}
-
+			Debug.LogFormat("distance: {0}", distance);
 			final = inittial + distance;
-				
+			//Debug.LogFormat("final: {0}, innitial: {1}", final, inittial);
 			lerpTarget = new Vector3 (final, enemyPlayer.position.y, enemyPlayer.position.z);
 		}
 

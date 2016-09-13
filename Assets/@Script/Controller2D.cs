@@ -217,7 +217,7 @@ public class Controller2D : RaycastController {
 
 	void WallCheck() {
 		float rayLength = 1.5f + transform.GetComponent<Renderer>().bounds.size.x/2;
-		Vector2 rayOrigin = new Vector3 (transform.position.x, transform.position.y + transform.GetComponent<Renderer> ().bounds.size.y/2 - 0.1f, transform.position.z);
+		Vector2 rayOrigin = new Vector3 (transform.position.x, transform.position.y + transform.GetComponent<Renderer> ().bounds.size.y/2 - 0.2f, transform.position.z);
 
 		for (int i = 0; i < 3; i++) {
 			RaycastHit2D wallHitRight = Physics2D.Raycast (rayOrigin, Vector2.right, rayLength, collisionMask);
@@ -232,7 +232,7 @@ public class Controller2D : RaycastController {
 			distanceWallLeft = wallHitLeft.distance;
 			distanceWallRight = wallHitRight.distance;
 
-			rayOrigin.y = rayOrigin.y - transform.GetComponent<Renderer> ().bounds.size.y/2 + 0.1f;
+			rayOrigin.y = rayOrigin.y - transform.GetComponent<Renderer> ().bounds.size.y/2 + 0.2f;
 		}
 	}
 
