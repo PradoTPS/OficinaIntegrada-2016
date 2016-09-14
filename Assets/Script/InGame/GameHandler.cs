@@ -46,7 +46,6 @@ public class GameHandler : MonoBehaviour {
 
 	void discoverName () {
 		winner = (alive [0].gameObject.GetComponent<Animator> ().runtimeAnimatorController).ToString ().Remove(4);
-		print (winner);
 
 		switch (winner) {
 		case "Azul":
@@ -64,13 +63,10 @@ public class GameHandler : MonoBehaviour {
 		case "Roxo":
 			winner = "Ingreed";
 			break;
-
-
 		}
 	}
 
 	IEnumerator callWinner(){
-
 		discoverName ();
 		txt.transform.parent = Camera.main.transform;
 
@@ -79,7 +75,6 @@ public class GameHandler : MonoBehaviour {
 		}
 
 		yield return new WaitForSeconds (1f);
-
 	}
 	#endregion
 }

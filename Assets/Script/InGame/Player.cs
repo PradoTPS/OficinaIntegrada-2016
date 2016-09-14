@@ -84,17 +84,6 @@ public class Player : MonoBehaviour {
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
 	}
-		
-	void PlayParticles() {
-		if (curState != "Dead") {
-			Color playerColor = GetComponent<SpriteRenderer> ().color;
-			deathParticle.startColor = new Color(playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
-			Instantiate(deathParticle, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
-			gameObject.GetComponent<SpriteRenderer>().enabled = false;
-			gameObject.GetComponent<Controller2D>().enabled = false;
-			gameObject.GetComponent<BoxCollider2D>().enabled = false;
-		}
-	}
 
 	void Walk(){
 		if (isKeyboard) {
@@ -207,7 +196,6 @@ public class Player : MonoBehaviour {
 				if((enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft == 0) && (enemyPlayer.GetComponent<Controller2D> ().colliderLeft == null)){
 					distance = 1.5f;
 				}
-				Debug.LogFormat("distanceWallLeft: {0}, size: {1}", enemyPlayer.GetComponent<Controller2D> ().distanceWallLeft, enemyPlayer.GetComponent<BoxCollider2D>().bounds.size.x/2);
 				distance *= -1;
 			} else {
 				if ((enemyPlayer.GetComponent<Controller2D> ().distanceWallRight - enemyPlayer.GetComponent<BoxCollider2D>().bounds.size.x/2 < distance) ) {
@@ -221,9 +209,7 @@ public class Player : MonoBehaviour {
 				}
 				distance *= 1;
 			}
-			Debug.LogFormat("distance: {0}", distance);
 			final = inittial + distance;
-			//Debug.LogFormat("final: {0}, innitial: {1}", final, inittial);
 			lerpTarget = new Vector3 (final, enemyPlayer.position.y, enemyPlayer.position.z);
 		}
 
@@ -277,12 +263,51 @@ public class Player : MonoBehaviour {
 			curState = "Idle";
 		}
 		#endregion
-			
+	}
+
+	void PlayParticles() {
+		if (curState != "Dead") {
+			Color playerColor = setColor ();
+			deathParticle.startColor = new Color(playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
+
+			Debug.LogFormat ("COLOR SET: r: {0}, g: {1}, b {2}, a: {3}", playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
+			Debug.LogFormat ("PARTICLE: r: {0}, g: {1}, b {2}, a: {3}", deathParticle.startColor[0], deathParticle.startColor[1], deathParticle.startColor[2], deathParticle.startColor[3]);
+
+			Instantiate(deathParticle, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
+			gameObject.GetComponent<SpriteRenderer>().enabled = false;
+			gameObject.GetComponent<Controller2D>().enabled = false;
+			gameObject.GetComponent<BoxCollider2D>().enabled = false;
+		}
+	}
+
+	Color setColor () {
+		Color cl;
+
+		switch (gameObject.GetComponent<Animator> ().runtimeAnimatorController.ToString ().Remove(4)) {
+			case "Azul":
+				cl = new Color (80, 164, 168);
+				break;
+
+			case "Verd":
+				cl = new Color (142, 173, 89);
+				break;
+
+			case "Lara":
+				cl = new Color (202, 153, 82);
+				break;
+
+			case "Roxo":
+				cl = new Color (129, 102, 153);
+				break;
+
+			default:
+				cl = new Color (255, 255, 255);
+				break;
+			}
+		return cl;
 	}
 		
-
 	void Death(){
-
 		otherVertical = controller.verticalLastHit.transform;
 		if (controller.collisions.below && otherVertical.gameObject.tag == "Player" && otherVertical.GetComponent<Player> ().curState != "Dead") {
 			otherVertical.gameObject.GetComponent<Player> ().PlayParticles();
@@ -290,11 +315,9 @@ public class Player : MonoBehaviour {
             Destroy(otherVertical.gameObject);
 			JumpOnEnemy();
 		}
-
 	}
 
     public void Limits(float top, float left, float right) {
-
         otherVertical = controller.verticalLastHit.transform;
         otherHorizontal = controller.horizontalLastHit.transform;
 
@@ -305,7 +328,6 @@ public class Player : MonoBehaviour {
 
 	void Update() {
 		if (curState != "Dead") {
-
 			Walk ();
 			Jump ();
 			Punch ();
@@ -313,7 +335,7 @@ public class Player : MonoBehaviour {
         }
 
 		//Testing death stuff
-        Limits(8, -8.4f, 8.4f);
+        Limits(8, -9f, 9f);
 		Death ();
 	}
 	#endregion
