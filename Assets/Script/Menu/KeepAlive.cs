@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class KeepAlive : MonoBehaviour {
@@ -17,7 +17,7 @@ public class KeepAlive : MonoBehaviour {
 	}
 
 	void KeepIt(){
-		if (EditorSceneManager.GetActiveScene ().name == "Game") {
+		if (SceneManager.GetActiveScene ().name == "Game") {
 			Destroy (gameObject);
 		} else {
 			DontDestroyOnLoad (gameObject);
