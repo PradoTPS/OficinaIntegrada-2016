@@ -67,6 +67,7 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().isKeyboard = false;
 		selected.GetComponent<SpriteRenderer> ().enabled = true;
 		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = true;
+		selected.GetComponent<PlayerSelection> ().Search ("Text").GetComponent<TextMesh> ().text = selected.GetComponent<PlayerSelection>().playerNumber;
 		ableXboxList.Remove (xbxCtrl);
 		enableXboxList.Add (xbxCtrl);
 	}
@@ -78,6 +79,7 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().isKeyboard = true;
 		selected.GetComponent<SpriteRenderer> ().enabled = true;
 		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = true;
+		selected.GetComponent<PlayerSelection> ().Search ("Text").GetComponent<TextMesh> ().text = selected.GetComponent<PlayerSelection>().playerNumber;
 		ableKeyboardList.Remove (kbrdCtrl);
 		enableKeyboardList.Add (kbrdCtrl);
 	}
@@ -88,7 +90,8 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<SpriteRenderer> ().enabled = false;
 		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().playersToChoose [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = false;
-		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = selected.GetComponent<PlayerSelection> ().arrows [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().arrows [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Text").GetComponent<TextMesh> ().text = "";
 		enableXboxList.Remove (xbxCtrl);
 		ableXboxList.Add (xbxCtrl);
 	}
@@ -100,7 +103,8 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().isKeyboard = false;
 		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().playersToChoose [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = false;
-		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = selected.GetComponent<PlayerSelection> ().arrows [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().arrows [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Text").GetComponent<TextMesh> ().text = "";
 		enableKeyboardList.Remove (kbrdCtrl);
 		ableKeyboardList.Add (kbrdCtrl);
 	}
