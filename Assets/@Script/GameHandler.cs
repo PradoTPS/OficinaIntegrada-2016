@@ -44,17 +44,42 @@ public class GameHandler : MonoBehaviour {
 		}
 	}
 
+	void discoverName () {
+		winner = (alive [0].gameObject.GetComponent<Animator> ().runtimeAnimatorController).ToString ().Remove(4);
+		print (winner);
+
+		switch (winner) {
+		case "Azul":
+			winner = "Seaweed";
+			break;
+
+		case "Verd":
+			winner = "Weed";
+			break;
+
+		case "Lara":
+			winner = "Tedd";
+			break;
+
+		case "Roxo":
+			winner = "Ingreed";
+			break;
+
+
+		}
+	}
+
 	IEnumerator callWinner(){
+
+		discoverName ();
 		txt.transform.parent = Camera.main.transform;
+
 		if(txt.text != winner + " is the winner"){
 			txt.text = winner + " is the winner"; 
 		}
 
 		yield return new WaitForSeconds (1f);
 
-		if(txt.text != winner + " is the winner"){
-			txt.text +=""; 
-		}
 	}
 	#endregion
 }
