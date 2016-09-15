@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ public class GameHandler : MonoBehaviour {
 	private string winner;
 
 	//Remove these later
-	private TextMesh txt;
+	private Text txt;
 	private AudioSource src;
 	public AudioClip A;
 	#endregion
@@ -20,7 +21,7 @@ public class GameHandler : MonoBehaviour {
 		}
 
 		//Remove these l8tr
-		txt = GetComponent<TextMesh>();
+		txt = Canvas.FindObjectOfType<Text>();
 		src = GetComponent<AudioSource> ();
 	}
 
@@ -68,7 +69,6 @@ public class GameHandler : MonoBehaviour {
 
 	IEnumerator callWinner(){
 		discoverName ();
-		txt.transform.parent = Camera.main.transform;
 
 		if(txt.text != winner + " is the winner"){
 			txt.text = winner + " is the winner"; 

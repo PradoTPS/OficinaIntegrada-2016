@@ -268,7 +268,7 @@ public class Player : MonoBehaviour {
 	void PlayParticles() {
 		if (curState != "Dead") {
 			Color playerColor = setColor ();
-			deathParticle.startColor = new Color(playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
+			deathParticle.GetComponent<Renderer>().sharedMaterial.color = new Color(playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
 
 			Debug.LogFormat ("COLOR SET: r: {0}, g: {1}, b {2}, a: {3}", playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
 			Debug.LogFormat ("PARTICLE: r: {0}, g: {1}, b {2}, a: {3}", deathParticle.startColor[0], deathParticle.startColor[1], deathParticle.startColor[2], deathParticle.startColor[3]);
