@@ -74,7 +74,7 @@ public class GameHandler : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("Round") <= 3) {
 			SceneManager.LoadScene ("Game");
 		} else {
-			SceneManager.LoadScene ("Menu");
+			SceneManager.LoadScene ("SplashScreen");
 			PlayerPrefs.SetInt ("Round", 0);
 		}
 	}
