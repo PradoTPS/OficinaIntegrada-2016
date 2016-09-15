@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,10 +9,8 @@ public class GameHandler : MonoBehaviour {
 	private List<Player> alive = new List<Player>();
 	private string winner;
 
-	//Remove these later
-	private Text txt;
-	private AudioSource src;
-	public AudioClip A;
+	public Text winnerTxt;
+	public Text roundTxt;
 	#endregion
 
 	#region Methods
@@ -20,9 +19,7 @@ public class GameHandler : MonoBehaviour {
 			alive.Add (GameObject.FindGameObjectsWithTag ("Player")[i].GetComponent<Player>());
 		}
 
-		//Remove these l8tr
-		txt = Canvas.FindObjectOfType<Text>();
-		src = GetComponent<AudioSource> ();
+		roundTxt.text = "Round " + PlayerPrefs.GetInt ("Round").ToString ();
 	}
 
 	void Update(){
@@ -30,10 +27,6 @@ public class GameHandler : MonoBehaviour {
 		if (alive.Count == 1) {
 			winner = alive [0].gameObject.name.Remove(8).ToString();
 			StartCoroutine(callWinner ());
-
-			if (!src.isPlaying) {
-				src.Play ();
-			}
 		}
 	}
 
@@ -70,11 +63,20 @@ public class GameHandler : MonoBehaviour {
 	IEnumerator callWinner(){
 		discoverName ();
 
-		if(txt.text != winner + " is the winner"){
-			txt.text = winner + " is the winner"; 
-		}
+		if(winnerTxt.text != winner + " is the winner"){
+			winnerTxt.text = winner + " is the winner";
 
-		yield return new WaitForSeconds (1f);
+			PlayerPrefs.SetInt ("Round", PlayerPrefs.GetInt ("Round") + 1);
+		}
+			
+		yield return new WaitForSeconds (10f);
+
+		if (PlayerPrefs.GetInt ("Round") <= 3) {
+			SceneManager.LoadScene ("Game");
+		} else {
+			SceneManager.LoadScene ("Menu");
+			PlayerPrefs.SetInt ("Round", 0);
+		}
 	}
 	#endregion
 }

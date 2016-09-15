@@ -58,6 +58,7 @@ public class CountingToGame : MonoBehaviour {
 	IEnumerator CountDowm(){
 		if (canPlay) {
 			if (count == 3) {
+				PlayerPrefs.SetInt ("Round", 1);
 				SceneManager.LoadScene ("Game");
 				count = 0;
 			}
