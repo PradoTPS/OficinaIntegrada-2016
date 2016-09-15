@@ -20,15 +20,15 @@ public class Spawning : MonoBehaviour {
 
 	void Spawn(){
 		for (int i = 0; i < spawners.Length; i++) {
-			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none" && PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "Random") {
+			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none" && PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "Player Random") {
 				GameObject instance = Instantiate (players[(int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7)) - 1)], spawners [i].transform.position, Quaternion.identity) as GameObject;
 				instance.transform.parent = playersLayer.transform;
 
 				SetControll ("Player " + (i + 1).ToString (), instance);
 				SetCollisionMask("Player " + (i + 1).ToString (), instance);
 
-			} else if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) == "Random") {
-				GameObject instance = Instantiate (players[Random.Range(1,5)], spawners [i].transform.position, Quaternion.identity) as GameObject;
+			} else if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) == "Player Random") {
+				GameObject instance = Instantiate (players[Random.Range(0,4)], spawners [i].transform.position, Quaternion.identity) as GameObject;
 				instance.transform.parent = playersLayer.transform;
 
 				SetControll ("Player " + (i + 1).ToString (), instance);

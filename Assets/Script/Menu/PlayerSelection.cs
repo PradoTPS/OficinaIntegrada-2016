@@ -73,7 +73,7 @@ public class PlayerSelection : MonoBehaviour {
 				PlayerPrefs.SetString (playerNumber, gameObject.GetComponent<SpriteRenderer> ().sprite.name);
 				GiveControll ();
 
-				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Random Player") {
+				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Player Random") {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [int.Parse(gameObject.GetComponent<SpriteRenderer> ().sprite.name.Substring (7))];
 				} else {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [selection.Count - 1];
@@ -85,7 +85,7 @@ public class PlayerSelection : MonoBehaviour {
 				PlayerPrefs.SetString (playerNumber, gameObject.GetComponent<SpriteRenderer> ().sprite.name);
 				GiveControll ();
 
-				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Random Player") {
+				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Player Random") {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [int.Parse(gameObject.GetComponent<SpriteRenderer> ().sprite.name.Substring (7))];
 				} else {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [selection.Count - 1];
