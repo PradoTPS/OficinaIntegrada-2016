@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 using XboxCtrlrInput;
 using KeyboardInput;
 
@@ -57,9 +58,44 @@ public class Player : MonoBehaviour {
 	public bool onWall;
 	public float lastDir = 1;
 	public bool jumpButton = false;
+
+	private bool gameCount;
+	private int count = 0;
+	public GameObject animate;
+
 	#endregion
 
 	#region Methods
+
+	void Awake() {
+		
+		gameCount = false;
+		count = 0;
+		animate = GameObject.Find ("Countdown");
+		StartCoroutine ("gameCountdown");
+		animate.GetComponent<Animator> ().enabled = true;
+
+	}
+
+	IEnumerator gameCountdown(){
+		if (count == 3) {
+			count = 0;
+			gameCount = true;
+			animate.GetComponent<Animator> ().enabled = false;
+			StopCoroutine("gameCountdown");
+		}
+
+
+
+		animate.GetComponent<Text> ().text = (float.Parse (animate.GetComponent<Text> ().text) - ( 1f / PlayerPrefs.GetFloat ("Countdown"))).ToString();
+		animate.GetComponent<Animation> ().Play ();
+
+		count++;
+
+		yield return new WaitForSeconds (2f);
+		StartCoroutine ("gameCountdown");
+	}
+
 	void Start() {
 		controller = GetComponent<Controller2D> ();
 		anim = GetComponent<Animator> ();
@@ -270,9 +306,6 @@ public class Player : MonoBehaviour {
 			Color playerColor = setColor ();
 			deathParticle.GetComponent<Renderer>().sharedMaterial.color = new Color(playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
 
-			Debug.LogFormat ("COLOR SET: r: {0}, g: {1}, b {2}, a: {3}", playerColor[0], playerColor[1], playerColor[2], playerColor[3]);
-			Debug.LogFormat ("PARTICLE: r: {0}, g: {1}, b {2}, a: {3}", deathParticle.startColor[0], deathParticle.startColor[1], deathParticle.startColor[2], deathParticle.startColor[3]);
-
 			Instantiate(deathParticle, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
 			gameObject.GetComponent<SpriteRenderer>().enabled = false;
 			gameObject.GetComponent<Controller2D>().enabled = false;
@@ -327,7 +360,7 @@ public class Player : MonoBehaviour {
     }
 
 	void Update() {
-		if (curState != "Dead") {
+		if (curState != "Dead" && gameCount) {
 			Walk ();
 			Jump ();
 			Punch ();
