@@ -49,10 +49,8 @@ public class CountingToGame : MonoBehaviour {
 	void CanPlay(){
 		if (CountingReady () >= 2 && CountingSet() == CountingReady()) {
 			canPlay = true;
-			animate.GetComponent<Animator> ().enabled = true;
 		} else {
 			canPlay = false;
-			animate.GetComponent<Animator> ().enabled = false;
 		}
 
 		if (canPlay && !wasCalled) {
@@ -63,7 +61,8 @@ public class CountingToGame : MonoBehaviour {
 
 	IEnumerator CountDown(){
 		if (canPlay) {
-			
+			animate.GetComponent<Animator> ().enabled = true;
+
 			if (count == 3) {
 				PlayerPrefs.SetInt ("Round", 1);
 				PlayerPrefs.SetFloat ("Countdown", CountingReady());
@@ -80,10 +79,12 @@ public class CountingToGame : MonoBehaviour {
 
 			yield return new WaitForSeconds (2f);
 			StartCoroutine ("CountDown");
-
 		} else {
 			count = 0;
 			wasCalled = false;
+			animate.GetComponent<Animator> ().enabled = false;
+			animate.transform.position = new Vector2 (-430, 70);
+			animate.GetComponent<Text> ().text = "4";
 		}
 	}
 

@@ -69,7 +69,7 @@ public class GameHandler : MonoBehaviour {
 			PlayerPrefs.SetInt ("Round", PlayerPrefs.GetInt ("Round") + 1);
 		}
 			
-		yield return new WaitForSeconds (10f);
+		yield return new WaitForSeconds (5f);
 
 		if (PlayerPrefs.GetInt ("Round") <= 3) {
 			SceneManager.LoadScene ("Game");

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using XboxCtrlrInput;
@@ -36,12 +37,14 @@ public class SelectionController : MonoBehaviour {
 		for (int i = 0; i < ableXboxList.Count; i++) {
 			if (XCI.GetButtonDown (XboxButton.A, ableXboxList[i])) {
 				ControlSet (selected, ableXboxList [i]);
+				selected.GetComponent<PlayerSelection> ().confirmText.enabled = false;
 			}
 		}
 
 		for (int i = 0; i < ableKeyboardList.Count; i++) {
 			if (KCI.GetButtonDown (KeyboardButton.Jump, ableKeyboardList[i])) {
 				ControlSet (selected, ableKeyboardList[i]);
+				selected.GetComponent<PlayerSelection> ().confirmText.enabled = false;
 			}
 		}
 	}
@@ -50,12 +53,14 @@ public class SelectionController : MonoBehaviour {
 		for (int i = 0; i < enableXboxList.Count; i++) {
 			if (XCI.GetButtonDown (XboxButton.B, enableXboxList[i]) && !selected.GetComponent<PlayerSelection>().isKeyboard && selected.GetComponent<PlayerSelection>().Xcontroller == enableXboxList[i]) {
 				ControlUnset (selected, enableXboxList [i]);
+				selected.GetComponent<PlayerSelection> ().confirmText.enabled = true;
 			}
 		}
 
 		for (int i = 0; i < enableKeyboardList.Count; i++) {
 			if (KCI.GetButtonDown (KeyboardButton.Action, enableKeyboardList[i]) && selected.GetComponent<PlayerSelection>().isKeyboard && selected.GetComponent<PlayerSelection>().Kcontroller == enableKeyboardList[i]) {
 				ControlUnset (selected, enableKeyboardList[i]);
+				selected.GetComponent<PlayerSelection> ().confirmText.enabled = true;
 			}
 		}
 	}

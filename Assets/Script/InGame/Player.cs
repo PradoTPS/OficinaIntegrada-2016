@@ -84,9 +84,7 @@ public class Player : MonoBehaviour {
 			animate.GetComponent<Animator> ().enabled = false;
 			StopCoroutine("gameCountdown");
 		}
-
-
-
+		
 		animate.GetComponent<Text> ().text = (float.Parse (animate.GetComponent<Text> ().text) - ( 1f / PlayerPrefs.GetFloat ("Countdown"))).ToString();
 		animate.GetComponent<Animation> ().Play ();
 

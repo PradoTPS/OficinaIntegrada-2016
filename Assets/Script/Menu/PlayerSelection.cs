@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using XboxCtrlrInput;
@@ -12,6 +13,8 @@ public class PlayerSelection : MonoBehaviour {
 	public List<Sprite> playersToChoose = new List<Sprite> ();
 	public List<Sprite> arrows = new List<Sprite> ();
 	public List<Sprite> selection = new List<Sprite> ();
+
+	public Text confirmText;
 
 	public string playerNumber;
 
