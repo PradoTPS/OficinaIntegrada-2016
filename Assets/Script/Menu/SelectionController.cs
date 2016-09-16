@@ -11,22 +11,22 @@ public class SelectionController : MonoBehaviour {
 	public bool nobodyReady;
 	public GameObject[] selectables = new GameObject[4];
 
-	private List<XboxController> ableXboxList = new List<XboxController>() {
-		XboxController.First,
-		XboxController.Second,
-		XboxController.Third,
-		XboxController.Fourth
-	};
-	private List<KeyboardController> ableKeyboardList = new List<KeyboardController>() {
-		KeyboardController.First,
-		KeyboardController.Second
-	};
+	private List<XboxController> ableXboxList = new List<XboxController>();
+	private List<KeyboardController> ableKeyboardList = new List<KeyboardController>();
 	private List<XboxController> enableXboxList = new List<XboxController> ();
 	private List<KeyboardController> enableKeyboardList = new List<KeyboardController> ();
 	#endregion
 
 	#region Methods
 	void Awake(){
+		ableXboxList.Add(XboxController.First);
+		ableXboxList.Add(XboxController.Second);
+		ableXboxList.Add(XboxController.Third);
+		ableXboxList.Add(XboxController.Fourth);
+
+		ableKeyboardList.Add(KeyboardController.First);
+		ableKeyboardList.Add(KeyboardController.Second);
+
 		for (int i = 0; i < selectables.Length; i++) {
 			selectables [i] = GameObject.Find("Selectable" + (i + 1).ToString());
 			PlayerPrefs.SetString ("Player " + (i + 1).ToString (), "none");
@@ -40,7 +40,7 @@ public class SelectionController : MonoBehaviour {
 				selected.GetComponent<PlayerSelection> ().confirmText.enabled = false;
 			}
 		}
-
+		
 		for (int i = 0; i < ableKeyboardList.Count; i++) {
 			if (KCI.GetButtonDown (KeyboardButton.Jump, ableKeyboardList[i])) {
 				ControlSet (selected, ableKeyboardList[i]);

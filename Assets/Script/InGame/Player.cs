@@ -92,7 +92,7 @@ public class Player : MonoBehaviour {
 
 		count++;
 
-		yield return new WaitForSeconds (2f);
+		yield return new WaitForSeconds (1f);
 		StartCoroutine ("gameCountdown");
 	}
 

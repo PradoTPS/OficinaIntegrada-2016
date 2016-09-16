@@ -140,7 +140,7 @@ public class PlayerSelection : MonoBehaviour {
 					PlayerPrefs.SetString(playerNumber + " isKeyboard", "false");
 					break;
 				case XboxController.Fourth:
-					PlayerPrefs.SetInt (playerNumber + " Controller", 2);
+					PlayerPrefs.SetInt (playerNumber + " Controller", 4);
 					PlayerPrefs.SetString(playerNumber + " isKeyboard", "false");
 					break;
 			}
