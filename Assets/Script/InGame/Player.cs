@@ -68,13 +68,15 @@ public class Player : MonoBehaviour {
 	#region Methods
 
 	void Awake() {
-		
-		gameCount = false;
-		count = 0;
-		animate = GameObject.Find ("Countdown");
-		StartCoroutine ("gameCountdown");
-		animate.GetComponent<Animator> ().enabled = true;
-
+		if(PlayerPrefs.GetInt("Round") != 1){
+			gameCount = false;
+			count = 0;
+			animate = GameObject.Find ("Countdown");
+			StartCoroutine ("gameCountdown");
+			animate.GetComponent<Animator> ().enabled = true;
+		} else {
+			gameCount = true;
+		}
 	}
 
 	IEnumerator gameCountdown(){

@@ -75,8 +75,6 @@ public class CountingToGame : MonoBehaviour {
 
 			count++;
 
-			Debug.Log (count);
-
 			yield return new WaitForSeconds (2f);
 			StartCoroutine ("CountDown");
 		} else {
