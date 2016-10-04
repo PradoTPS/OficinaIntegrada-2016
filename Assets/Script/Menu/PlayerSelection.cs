@@ -92,6 +92,7 @@ public class PlayerSelection : MonoBehaviour {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [int.Parse(gameObject.GetComponent<SpriteRenderer> ().sprite.name.Substring (7))];
 				} else {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [selection.Count - 1];
+					PlayerPrefs.SetInt("Random Player", Random.Range(0,4));
 				}
 			}
 		}

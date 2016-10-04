@@ -28,7 +28,7 @@ public class Spawning : MonoBehaviour {
 				SetCollisionMask("Player " + (i + 1).ToString (), instance);
 
 			} else if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) == "Player Random") {
-				GameObject instance = Instantiate (players[Random.Range(0,4)], spawners [i].transform.position, Quaternion.identity) as GameObject;
+				GameObject instance = Instantiate (players[PlayerPrefs.GetInt("Random Player")], spawners [i].transform.position, Quaternion.identity) as GameObject;
 				instance.transform.parent = playersLayer.transform;
 
 				SetControll ("Player " + (i + 1).ToString (), instance);
