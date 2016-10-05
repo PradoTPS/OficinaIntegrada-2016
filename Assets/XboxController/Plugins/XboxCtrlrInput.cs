@@ -1638,7 +1638,7 @@ namespace XboxCtrlrInput
 			
 			return stateToReturn;
 		}
-		
+
 		private static bool XInputStillInCurrFrame()
 		{
 			bool r = false;

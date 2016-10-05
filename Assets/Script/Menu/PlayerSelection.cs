@@ -16,6 +16,8 @@ public class PlayerSelection : MonoBehaviour {
 
 	public Text confirmText;
 
+	public int numberOfPlayers;
+
 	public string playerNumber;
 
 	public bool isSet = false;
@@ -92,7 +94,7 @@ public class PlayerSelection : MonoBehaviour {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [int.Parse(gameObject.GetComponent<SpriteRenderer> ().sprite.name.Substring (7))];
 				} else {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [selection.Count - 1];
-					PlayerPrefs.SetInt("Random Player", Random.Range(0,4));
+					PlayerPrefs.SetInt(playerNumber + " " + "Random Player", Random.Range (0, 4));
 				}
 			}
 		}

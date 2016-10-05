@@ -8,14 +8,13 @@ using KeyboardInput;
 
 public class SplashScreenText : MonoBehaviour {
 
-	int queriedNumberOfCtrlrs = XCI.GetNumPluggedCtrlrs ();
 	public Text TriggerTxt;
-    public 
+
 	// Use this for initialization
-	void Start () {
-		if (queriedNumberOfCtrlrs == 1){
+	void Awake () {
+		if (XCI.GetNumPluggedCtrlrs () >= 1){
 			TriggerTxt.text = "Press A to continue";
-		}else{
+		} else {
 			TriggerTxt.text = "Press SPACE to continue";
 		}
 	}
