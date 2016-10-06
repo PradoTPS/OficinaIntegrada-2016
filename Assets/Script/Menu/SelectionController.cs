@@ -93,9 +93,9 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().playerNumber = "";
 		selected.GetComponent<PlayerSelection> ().isSet = false;
 		selected.GetComponent<SpriteRenderer> ().enabled = false;
-		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().playersToChoose [0];
+		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().AblePlayers [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = false;
-		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().arrows [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().AbleArrows [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Text").GetComponent<TextMesh> ().text = "";
 		enableXboxList.Remove (xbxCtrl);
 		ableXboxList.Add (xbxCtrl);
@@ -106,9 +106,9 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().isSet = false;
 		selected.GetComponent<SpriteRenderer> ().enabled = false;
 		selected.GetComponent<PlayerSelection> ().isKeyboard = false;
-		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().playersToChoose [0];
+		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().AblePlayers [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = false;
-		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().arrows [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().AbleArrows [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Text").GetComponent<TextMesh> ().text = "";
 		enableKeyboardList.Remove (kbrdCtrl);
 		ableKeyboardList.Add (kbrdCtrl);

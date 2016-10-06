@@ -21,20 +21,25 @@ public class Spawning : MonoBehaviour {
 	void Spawn(){
 		for (int i = 0; i < spawners.Length; i++) {
 			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none" && PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "Player Random") {
-				GameObject instance = Instantiate (players[(int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7)) - 1)], spawners [i].transform.position, Quaternion.identity) as GameObject;
-				instance.transform.parent = playersLayer.transform;
 
+				GameObject instance = new GameObject();
+				InstantiatePlayer (ref instance, (int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7)) - 1), i);
 				SetControll ("Player " + (i + 1).ToString (), instance);
 				SetCollisionMask("Player " + (i + 1).ToString (), instance);
 
 			} else if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) == "Player Random") {
-				GameObject instance = Instantiate (players[PlayerPrefs.GetInt("Player " + (i + 1).ToString() + " " + "Random Player")], spawners [i].transform.position, Quaternion.identity) as GameObject;
-				instance.transform.parent = playersLayer.transform;
-
+				
+				GameObject instance = new GameObject();
+				InstantiatePlayer (ref instance, PlayerPrefs.GetInt("Player " + (i + 1).ToString() + " " + "Random Player"), i);
 				SetControll ("Player " + (i + 1).ToString (), instance);
 				SetCollisionMask("Player " + (i + 1).ToString (), instance);
 			}
 		}
+	}
+
+	void InstantiatePlayer(ref GameObject newInstance, int playerPrefs, int currentNumber){
+		newInstance = Instantiate (players[playerPrefs], spawners [currentNumber].transform.position, Quaternion.identity) as GameObject;
+		newInstance.transform.parent = playersLayer.transform;
 	}
 
 	void SetControll(string key, GameObject player){

@@ -19,13 +19,16 @@ public class SetHud : MonoBehaviour {
 	void SettingHUD(){
 		for (int i = 0; i < playersHUD.Length; i++) {
 			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none" && PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "Player Random") {
-				playersHUD[i].GetComponent<Image>().sprite = HUDImages[(int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7)) - 1)];
-				playersHUD [i].GetComponent<Image> ().color = new Vector4 (255, 255, 255, 255);
+				DefineHUDImage (int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7)) - 1, i);
 			} else if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) == "Player Random") {
-				playersHUD[i].GetComponent<Image>().sprite = HUDImages[PlayerPrefs.GetInt("Player " + (i + 1).ToString() + " " + "Random Player")];
-				playersHUD [i].GetComponent<Image> ().color = new Vector4 (255, 255, 255, 255);
+				DefineHUDImage (PlayerPrefs.GetInt("Player " + (i + 1).ToString() + " " + "Random Player"), i);
 			}
 		}
+	}
+
+	void DefineHUDImage(int playerPrefs, int currentNumber){
+		playersHUD[currentNumber].GetComponent<Image>().sprite = HUDImages[playerPrefs];
+		playersHUD [currentNumber].GetComponent<Image> ().color = new Vector4 (255, 255, 255, 255);
 	}
 	#endregion
 }

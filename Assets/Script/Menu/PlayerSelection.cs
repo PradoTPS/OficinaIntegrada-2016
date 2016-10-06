@@ -10,9 +10,12 @@ public class PlayerSelection : MonoBehaviour {
 	public XboxController Xcontroller;
 	public KeyboardController Kcontroller;
 
-	public List<Sprite> playersToChoose = new List<Sprite> ();
-	public List<Sprite> arrows = new List<Sprite> ();
-	public List<Sprite> selection = new List<Sprite> ();
+	public List<Sprite> AblePlayers = new List<Sprite> ();
+	public List<Sprite> NotAblePlayers = new List<Sprite> ();
+	public List<Sprite> AbleArrows = new List<Sprite> ();
+	public List<Sprite> NotAbleArrows = new List<Sprite> ();
+	public List<Sprite> AbleSelection = new List<Sprite> ();
+	public List<Sprite> NotAbleSelection = new List<Sprite> ();
 
 	public Text confirmText;
 
@@ -28,19 +31,19 @@ public class PlayerSelection : MonoBehaviour {
 	
 	#region Methods
 	void Start(){
-		gameObject.GetComponent<SpriteRenderer> ().sprite = playersToChoose [0];
-		Search("Arrow").GetComponent<SpriteRenderer> ().sprite = arrows [0];
+		gameObject.GetComponent<SpriteRenderer> ().sprite = AblePlayers [0];
+		Search("Arrow").GetComponent<SpriteRenderer> ().sprite = AbleArrows [0];
 	}
 
 	void ChangeCurrentSprite(string direction){
-		for (int i = 0; i < playersToChoose.Count; i++) {
-			if (gameObject.GetComponent<SpriteRenderer> ().sprite == playersToChoose [i]) {
-				if (direction == "next" && i + 1 <= playersToChoose.Count - 1) {
-					gameObject.GetComponent<SpriteRenderer> ().sprite = playersToChoose [i + 1];
-					Search("Arrow").GetComponent<SpriteRenderer> ().sprite = arrows [i + 1];
+		for (int i = 0; i < AblePlayers.Count; i++) {
+			if (gameObject.GetComponent<SpriteRenderer> ().sprite == AblePlayers [i]) {
+				if (direction == "next" && i + 1 <= AblePlayers.Count - 1) {
+					gameObject.GetComponent<SpriteRenderer> ().sprite = AblePlayers [i + 1];
+					Search("Arrow").GetComponent<SpriteRenderer> ().sprite = AbleArrows [i + 1];
 				} else if (direction == "previous" && i - 1 >= 0) {
-					gameObject.GetComponent<SpriteRenderer> ().sprite = playersToChoose [i - 1];
-					Search("Arrow").GetComponent<SpriteRenderer> ().sprite = arrows [i - 1];
+					gameObject.GetComponent<SpriteRenderer> ().sprite = AblePlayers [i - 1];
+					Search("Arrow").GetComponent<SpriteRenderer> ().sprite = AbleArrows [i - 1];
 				}
 				break;
 			}
@@ -79,9 +82,10 @@ public class PlayerSelection : MonoBehaviour {
 				GiveControll ();
 
 				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Player Random") {
-					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [int.Parse(gameObject.GetComponent<SpriteRenderer> ().sprite.name.Substring (7))];
+					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = AbleSelection [int.Parse(gameObject.GetComponent<SpriteRenderer> ().sprite.name.Substring (7))];
 				} else {
-					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [selection.Count - 1];
+					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = AbleSelection [AbleSelection.Count - 1];
+					PlayerPrefs.SetInt(playerNumber + " " + "Random Player", Mathf.FloorToInt(Random.Range (0, numberOfPlayers*10)/10));
 				}
 			}
 		} else if (isKeyboard && isSet && !ready) {
@@ -91,10 +95,10 @@ public class PlayerSelection : MonoBehaviour {
 				GiveControll ();
 
 				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Player Random") {
-					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [int.Parse(gameObject.GetComponent<SpriteRenderer> ().sprite.name.Substring (7))];
+					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = AbleSelection [int.Parse(gameObject.GetComponent<SpriteRenderer> ().sprite.name.Substring (7))];
 				} else {
-					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [selection.Count - 1];
-					PlayerPrefs.SetInt(playerNumber + " " + "Random Player", Random.Range (0, 4));
+					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = AbleSelection [AbleSelection.Count - 1];
+					PlayerPrefs.SetInt(playerNumber + " " + "Random Player", Mathf.FloorToInt(Random.Range (0, numberOfPlayers*10)/10));
 				}
 			}
 		}
@@ -104,13 +108,13 @@ public class PlayerSelection : MonoBehaviour {
 		if (!isKeyboard && isSet && ready) {
 			if (XCI.GetButtonDown (XboxButton.B, Xcontroller)) {
 				ready = false;
-				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [0];
+				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = AbleSelection [0];
 				PlayerPrefs.SetString (playerNumber, "none");
 			}
 		} else if (isKeyboard && isSet && ready) {
 			if (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller)) {
 				ready = false;
-				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = selection [0];
+				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = AbleSelection [0];
 				PlayerPrefs.SetString (playerNumber, "none");
 			}
 		}
