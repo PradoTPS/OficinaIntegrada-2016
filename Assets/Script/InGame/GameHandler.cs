@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class GameHandler : MonoBehaviour {
 	#region Properties
-	private List<Player> alive = new List<Player>();
+	public List<Player> alive = new List<Player>();
 	private string winner;
 
 	public Text winnerTxt;
@@ -17,6 +17,7 @@ public class GameHandler : MonoBehaviour {
 	void Start () {
 		for (int i = 0; i < GameObject.FindGameObjectsWithTag ("Player").Length; i++) {
 			alive.Add (GameObject.FindGameObjectsWithTag ("Player")[i].GetComponent<Player>());
+			PlayerPrefs.SetInt ("RoundWinner " + alive [i].gameObject.name, 0);
 		}
 
 		roundTxt.text = "Round " + PlayerPrefs.GetInt ("Round").ToString ();
@@ -42,21 +43,21 @@ public class GameHandler : MonoBehaviour {
 		winner = (alive [0].gameObject.GetComponent<Animator> ().runtimeAnimatorController).ToString ().Remove(4);
 
 		switch (winner) {
-		case "Azul":
-			winner = "Seaweed";
-			break;
+			case "Azul":
+				winner = "Seaweed";
+				break;
 
-		case "Verd":
-			winner = "Weed";
-			break;
+			case "Verd":
+				winner = "Weed";
+				break;
 
-		case "Lara":
-			winner = "Tedd";
-			break;
+			case "Lara":
+				winner = "Tedd";
+				break;
 
-		case "Roxo":
-			winner = "Ingreed";
-			break;
+			case "Roxo":
+				winner = "Ingreed";
+				break;
 		}
 	}
 
@@ -65,7 +66,6 @@ public class GameHandler : MonoBehaviour {
 
 		if(winnerTxt.text != winner + " is the winner"){
 			winnerTxt.text = winner + " is the winner";
-
 			PlayerPrefs.SetInt ("Round", PlayerPrefs.GetInt ("Round") + 1);
 		}
 			
