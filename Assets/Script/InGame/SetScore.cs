@@ -21,7 +21,7 @@ public class SetScore : MonoBehaviour {
 	}
 
 	void SettingText(){
-		for (int i = 0; i < HUDScore.Length; i++) {
+		for (int i = 0; i < alive.Count; i++) {
 			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none") {
 				int playerScore = PlayerPrefs.GetInt("RoundWinner " + alive[i].gameObject.name);
 				HUDScore[i].GetComponent<Text>().text = playerScore.ToString();
@@ -30,10 +30,12 @@ public class SetScore : MonoBehaviour {
 	}
 
 	void Update(){
-		if (alive.Count == 1) {
-			PlayerPrefs.GetInt ("RoundWinner " + alive [0].gameObject.name, PlayerPrefs.GetInt ("RoundWinner " + alive [0].gameObject.name) + 1);
+		if (alive.Count == 1 && !end) {
+			PlayerPrefs.SetInt ("RoundWinner " + alive [0].gameObject.name, PlayerPrefs.GetInt ("RoundWinner " + alive [0].gameObject.name) + 1);
+			end = true;
 		}
 		SettingText ();
+		print (HUDScore.Length);
 	}
 	#endregion
 }
