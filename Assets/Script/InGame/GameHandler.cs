@@ -17,7 +17,7 @@ public class GameHandler : MonoBehaviour {
 	void Start () {
 		for (int i = 0; i < GameObject.FindGameObjectsWithTag ("Player").Length; i++) {
 			alive.Add (GameObject.FindGameObjectsWithTag ("Player")[i].GetComponent<Player>());
-			PlayerPrefs.SetInt ("RoundWinner " + alive [i].gameObject.name, 0);
+			PlayerPrefs.SetInt ("RoundWinner " + alive [i].gameObject.name, PlayerPrefs.GetInt ("RoundWinner " + alive [i].gameObject.name));
 		}
 
 		roundTxt.text = "Round " + PlayerPrefs.GetInt ("Round").ToString ();
@@ -76,6 +76,10 @@ public class GameHandler : MonoBehaviour {
 		} else {
 			SceneManager.LoadScene ("SplashScreen");
 			PlayerPrefs.SetInt ("Round", 0);
+			PlayerPrefs.SetInt ("RoundWinner Weed(Clone)", 0);
+			PlayerPrefs.SetInt ("RoundWinner Seaweed(Clone)", 0);
+			PlayerPrefs.SetInt ("RoundWinner Ingreed(Clone)", 0);
+			PlayerPrefs.SetInt ("RoundWinner Tedd(Clone)", 0);
 		}
 	}
 	#endregion
