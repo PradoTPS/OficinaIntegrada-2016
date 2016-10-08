@@ -15,18 +15,16 @@ public class Controller2D : RaycastController {
 
 	[HideInInspector]
 	public Collider2D colliderLeft;
-
 	[HideInInspector]
 	public Collider2D colliderRight;
 
 	[HideInInspector]
-	public float distanceWallRight;
+	public bool interPlayersCollision = false;
 
+	[HideInInspector]
+	public float distanceWallRight;
 	[HideInInspector]
 	public float distanceWallLeft;
-
-	[HideInInspector]
-	public bool interPlayersCollision = false;
 
 	private float maxClimbAngle = 80;
 	private float maxDescendAngle = 80;

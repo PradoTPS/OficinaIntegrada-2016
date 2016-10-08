@@ -64,11 +64,9 @@ public class Player : MonoBehaviour {
 	private bool gameCount;
 	private int count = 0;
 	public GameObject animate;
-
 	#endregion
 
 	#region Methods
-
 	void Awake() {
 		if(PlayerPrefs.GetInt("Round") != 1){
 			gameCount = false;
@@ -79,6 +77,8 @@ public class Player : MonoBehaviour {
 		} else {
 			gameCount = true;
 		}
+
+		curState = "Idle";
 	}
 
 	IEnumerator gameCountdown(){
@@ -117,7 +117,7 @@ public class Player : MonoBehaviour {
 			XCI.DEBUG_LogControllerNames();
 		}
 
-		curState= "Idle";
+
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
