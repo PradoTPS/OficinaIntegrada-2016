@@ -6,67 +6,42 @@ using System.Collections.Generic;
 
 public class GameHandler : MonoBehaviour {
 	#region Properties
-	public List<Player> alive = new List<Player>();
-	private string winner;
+	private string winnerName;
 
-	public Text winnerTxt;
-	public Text roundTxt;
+	public List<Player> alive = new List<Player>();
+
+	public Text winnerText;
+	public Text roundText;
 	#endregion
 
 	#region Methods
 	void Start () {
 		for (int i = 0; i < GameObject.FindGameObjectsWithTag ("Player").Length; i++) {
 			alive.Add (GameObject.FindGameObjectsWithTag ("Player")[i].GetComponent<Player>());
-			PlayerPrefs.SetInt ("RoundWinner " + alive [i].gameObject.name, PlayerPrefs.GetInt ("RoundWinner " + alive [i].gameObject.name));
 		}
 
-		roundTxt.text = "Round " + PlayerPrefs.GetInt ("Round").ToString ();
+		roundText.text = "Round " + PlayerPrefs.GetInt ("Round").ToString ();
 	}
 
-	void Update(){
-		WinnerCheck ();
-		if (alive.Count == 1) {
-			winner = alive [0].gameObject.name.Remove(8).ToString();
-			StartCoroutine(callWinner ());
-		}
-	}
-
-	void WinnerCheck (){
+	void CheckingAlive (){
 		for (int i = 0; i <= alive.Count - 1 ; i++) {
 			if (alive [i].curState == "Dead") {
 				alive.Remove (alive[i]);
 			}
 		}
-	}
 
-	void discoverName () {
-		winner = (alive [0].gameObject.GetComponent<Animator> ().runtimeAnimatorController).ToString ().Remove(4);
-
-		switch (winner) {
-			case "Azul":
-				winner = "Seaweed";
-				break;
-
-			case "Verd":
-				winner = "Weed";
-				break;
-
-			case "Lara":
-				winner = "Tedd";
-				break;
-
-			case "Roxo":
-				winner = "Ingreed";
-				break;
+		if (alive.Count == 1) {
+			StartCoroutine(CallWinner ());
 		}
 	}
 
-	IEnumerator callWinner(){
-		discoverName ();
+	IEnumerator CallWinner(){
+		DiscoverName ();
 
-		if(winnerTxt.text != winner + " is the winner"){
-			winnerTxt.text = winner + " is the winner";
+		if(winnerText.text != winnerName + " is the winner"){
+			winnerText.text = winnerName + " is the winner";
 			PlayerPrefs.SetInt ("Round", PlayerPrefs.GetInt ("Round") + 1);
+			PlayerPrefs.SetInt("RoundWinner " + alive[0].playerNumber.ToString(), PlayerPrefs.GetInt("RoundWinner " + alive[0].playerNumber) + 1);
 		}
 			
 		yield return new WaitForSeconds (5f);
@@ -76,11 +51,39 @@ public class GameHandler : MonoBehaviour {
 		} else {
 			SceneManager.LoadScene ("SplashScreen");
 			PlayerPrefs.SetInt ("Round", 0);
-			PlayerPrefs.SetInt ("RoundWinner Weed(Clone)", 0);
-			PlayerPrefs.SetInt ("RoundWinner Seaweed(Clone)", 0);
-			PlayerPrefs.SetInt ("RoundWinner Ingreed(Clone)", 0);
-			PlayerPrefs.SetInt ("RoundWinner Tedd(Clone)", 0);
+
+			for (int i = 0; i < 4; i++) {
+				PlayerPrefs.SetInt ("RoundWinner " + (i + 1).ToString(), 0);
+			}
 		}
+	}
+
+	void DiscoverName () {
+		for (int i = 0; i < 7; i++) {
+			winnerName = alive [0].gameObject.name.Remove (alive [0].gameObject.name.Length - (i + 1)).ToString ();
+		}
+
+		switch (winnerName) {
+			case "Azul":
+				winnerName = "Seaweed";
+				break;
+
+			case "Verde":
+				winnerName = "Weed";
+				break;
+
+			case "Laranja":
+				winnerName = "Tedd";
+				break;
+
+			case "Roxo":
+				winnerName = "Ingreed";
+				break;
+		}
+	}
+
+	void Update(){
+		CheckingAlive ();
 	}
 	#endregion
 }

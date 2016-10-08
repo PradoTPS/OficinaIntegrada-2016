@@ -7,6 +7,8 @@ using KeyboardInput;
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
 	#region Properties
+	public int playerNumber;
+
 	public bool isKeyboard = false;
 	private static bool didQueryNumOfCtrlrs = false;
 

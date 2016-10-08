@@ -39,6 +39,7 @@ public class Spawning : MonoBehaviour {
 
 	void InstantiatePlayer(ref GameObject newInstance, int playerPrefs, int currentNumber){
 		newInstance = Instantiate (players[playerPrefs], spawners [currentNumber].transform.position, Quaternion.identity) as GameObject;
+		newInstance.GetComponent<Player>().playerNumber = currentNumber + 1;
 		newInstance.transform.parent = playersLayer.transform;
 	}
 
