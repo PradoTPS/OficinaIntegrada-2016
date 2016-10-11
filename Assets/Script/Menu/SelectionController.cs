@@ -4,9 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 using XboxCtrlrInput;
 using KeyboardInput;
+using System.Linq;
 
 public class SelectionController : MonoBehaviour {
 	#region Properties
+	public List<Sprite> AblePlayers = new List<Sprite> ();
+	public List<Sprite> NotAblePlayers = new List<Sprite> ();
+	public List<Sprite> AbleArrows = new List<Sprite> ();
+	public List<Sprite> NotAbleArrows = new List<Sprite> ();
+	public List<Sprite> AbleSelection = new List<Sprite> ();
+	public List<Sprite> NotAbleSelection = new List<Sprite> ();
+
 	[HideInInspector]
 	public bool nobodyReady;
 	public GameObject[] selectables = new GameObject[4];
@@ -31,6 +39,20 @@ public class SelectionController : MonoBehaviour {
 			selectables [i] = GameObject.Find("Selectable" + (i + 1).ToString());
 			PlayerPrefs.SetString ("Player " + (i + 1).ToString (), "none");
 		}
+	}
+
+	public void SpriteNotAble (Sprite player, Sprite arrow, Sprite selection){
+		Sprite temp;
+		temp = player; NotAblePlayers.Add (temp); AblePlayers.Remove (temp);
+		temp = arrow; NotAbleArrows.Add (temp); AbleArrows.Remove (temp);
+		temp = selection; NotAbleSelection.Add (temp); AbleSelection.Remove (temp);
+	}
+
+	public void SpriteAble (Sprite player, Sprite arrow, Sprite selection){
+		Sprite temp;
+		temp = player; AblePlayers.Add (temp); NotAblePlayers.Remove (temp);
+		temp = arrow; AbleArrows.Add (temp); NotAbleArrows.Remove (temp);
+		temp = selection; AbleSelection.Add (temp); NotAbleSelection.Remove (temp);
 	}
 
 	public void Selecting(GameObject selected){
@@ -93,9 +115,9 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().playerNumber = "";
 		selected.GetComponent<PlayerSelection> ().isSet = false;
 		selected.GetComponent<SpriteRenderer> ().enabled = false;
-		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().AblePlayers [0];
+		selected.GetComponent<SpriteRenderer> ().sprite = AblePlayers [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = false;
-		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().AbleArrows [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = AbleArrows [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Text").GetComponent<TextMesh> ().text = "";
 		enableXboxList.Remove (xbxCtrl);
 		ableXboxList.Add (xbxCtrl);
@@ -106,9 +128,9 @@ public class SelectionController : MonoBehaviour {
 		selected.GetComponent<PlayerSelection> ().isSet = false;
 		selected.GetComponent<SpriteRenderer> ().enabled = false;
 		selected.GetComponent<PlayerSelection> ().isKeyboard = false;
-		selected.GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().AblePlayers [0];
+		selected.GetComponent<SpriteRenderer> ().sprite = AblePlayers [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().enabled = false;
-		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = selected.GetComponent<PlayerSelection> ().AbleArrows [0];
+		selected.GetComponent<PlayerSelection> ().Search ("Arrow").GetComponent<SpriteRenderer> ().sprite = AbleArrows [0];
 		selected.GetComponent<PlayerSelection> ().Search ("Text").GetComponent<TextMesh> ().text = "";
 		enableKeyboardList.Remove (kbrdCtrl);
 		ableKeyboardList.Add (kbrdCtrl);
@@ -130,6 +152,16 @@ public class SelectionController : MonoBehaviour {
 				pn = "Player " + (i + 1).ToString ();
 			}
 		}
+	}
+
+	void AbleListsOrganize (){
+		AbleArrows = AbleArrows.OrderBy( go=> go.name ).ToList();
+		AblePlayers = AblePlayers.OrderBy(go=>go.name).ToList();
+		AbleSelection = AbleSelection.OrderBy(go=>go.name).ToList();
+	}
+
+	void Update() {
+		AbleListsOrganize ();
 	}
 
 	void FixedUpdate(){
