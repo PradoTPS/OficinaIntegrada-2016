@@ -155,9 +155,9 @@ public class SelectionController : MonoBehaviour {
 	}
 
 	void AbleListsOrganize (){
-		AbleArrows = AbleArrows.OrderBy( go=> go.name ).ToList();
-		AblePlayers = AblePlayers.OrderBy(go=>go.name).ToList();
-		AbleSelection = AbleSelection.OrderBy(go=>go.name).ToList();
+		AbleArrows = AbleArrows.OrderBy( go => go.name ).ToList();
+		AblePlayers = AblePlayers.OrderBy(go => go.name).ToList();
+		AbleSelection = AbleSelection.OrderBy(go => go.name).ToList();
 	}
 
 	void Update() {
