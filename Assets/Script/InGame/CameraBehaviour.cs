@@ -69,6 +69,7 @@ public class CameraBehaviour : MonoBehaviour {
 
     Transform[] SettingTargets() {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+		print (players.Length);
         int numberOfPlayers = players.Length;
 
         targets = new Transform[numberOfPlayers];

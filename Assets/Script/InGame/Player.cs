@@ -349,6 +349,7 @@ public class Player : MonoBehaviour {
 			otherVertical.gameObject.GetComponent<Player> ().curState = "Dead";
             Destroy(otherVertical.gameObject);
 			JumpOnEnemy();
+			print("Hey");
 		}
 	}
 
@@ -369,6 +370,7 @@ public class Player : MonoBehaviour {
 			AnimationHandling ();
         }
 
+		print(curState);
 		//Testing death stuff
         Limits(8, -9f, 9f);
 		Death ();
