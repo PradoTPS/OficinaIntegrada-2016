@@ -66,7 +66,7 @@ public class CountingToGame : MonoBehaviour {
 			if (count == 3) {
 				PlayerPrefs.SetInt ("Round", 1);
 				PlayerPrefs.SetFloat ("Countdown", CountingReady());
-				SceneManager.LoadScene ("Game");
+				SceneManager.LoadScene ("MatchSettings");
 				count = 0;
 			}
 

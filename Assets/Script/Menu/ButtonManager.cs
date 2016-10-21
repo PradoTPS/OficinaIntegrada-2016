@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 using XboxCtrlrInput;
 using KeyboardInput;
 
 public class ButtonManager : MonoBehaviour {
 	#region Properties
 	public string nextScene;
-	public bool isInput;
+	public bool itsNotButton;
 	public Scene GameScene;
-
 	#endregion
 
 	#region Methods
@@ -18,10 +19,9 @@ public class ButtonManager : MonoBehaviour {
 	}
 
 	void Update(){
-		if (isInput) {
+		if (itsNotButton) {
 			if (XCI.GetButtonDown (XboxButton.A, XboxController.All) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)) {
 				GoTo ();
-
 			}
 		}
 	}
