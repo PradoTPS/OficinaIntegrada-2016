@@ -13,6 +13,17 @@ public class SliderBehaviour : MonoBehaviour {
 
 	private string setSlider;
 
+	void Awake() {
+
+		if (PlayerPrefs.HasKey ("SoundValue") && PlayerPrefs.HasKey ("LightValue")) {
+			soundSlider.GetComponent<Slider> ().value = PlayerPrefs.GetFloat ("SoundValue");
+			lightSlider.GetComponent<Slider> ().value = PlayerPrefs.GetFloat ("LightValue");
+		} else {	
+			soundSlider.GetComponent<Slider> ().value = 1;
+			lightSlider.GetComponent<Slider> ().value = 1;
+		}
+	}
+
 	void Start() {
 		setSlider = "sound";	
 	}
@@ -51,12 +62,13 @@ public class SliderBehaviour : MonoBehaviour {
 		
 		if (setSlider == "light") {			
 			lightSlider.GetComponent<Slider>().value += (keyboard + Xbox);
+			PlayerPrefs.SetFloat("LightValue", lightSlider.GetComponent<Slider>().value);
 		}
 		
 		if (setSlider == "sound") {
 			soundSlider.GetComponent<Slider>().value += (keyboard + Xbox);
 			AudioListener.volume = soundSlider.GetComponent<Slider>().value;
-			print(AudioListener.volume);
+			PlayerPrefs.SetFloat("SoundValue", soundSlider.GetComponent<Slider>().value);
 		}
 	}
 
