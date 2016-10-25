@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using XboxCtrlrInput;
 using KeyboardInput;
+using UnityEngine.SceneManagement;
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
@@ -68,7 +69,7 @@ public class Player : MonoBehaviour {
 
 	#region Methods
 	void Awake() {
-		if(PlayerPrefs.GetInt("Round") != 1){
+		if(PlayerPrefs.GetInt("Round") != 1 && SceneManager.GetActiveScene().name != "Instructions"){
 			gameCount = false;
 			count = 0;
 			animate = GameObject.Find ("Countdown");
