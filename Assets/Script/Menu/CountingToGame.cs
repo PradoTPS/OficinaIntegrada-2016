@@ -6,11 +6,14 @@ using System.Collections;
 public class CountingToGame : MonoBehaviour {
 	#region Properties
 	private GameObject[] selectables = new GameObject[4];
-	private bool canPlay;
-	private bool wasCalled = false;
+
 	private GameObject animate;
+	private GameObject Handler;
 
 	private int count = 0;
+
+	private bool canPlay;
+	private bool wasCalled = false;
 	#endregion
 
 	#region Methods
@@ -20,6 +23,10 @@ public class CountingToGame : MonoBehaviour {
 		}
 
 		animate = GameObject.Find ("Countdown");
+	}
+
+	void Start(){
+		Handler = GameObject.Find ("SelectionHandler");
 	}
 
 	int CountingReady(){
@@ -64,6 +71,7 @@ public class CountingToGame : MonoBehaviour {
 			animate.GetComponent<Animator> ().enabled = true;
 
 			if (count == 3) {
+				Handler.GetComponent<SelectionController>().SettingRandom();
 				PlayerPrefs.SetInt ("Round", 1);
 				PlayerPrefs.SetFloat ("Countdown", CountingReady());
 				SceneManager.LoadScene ("MatchSettings");

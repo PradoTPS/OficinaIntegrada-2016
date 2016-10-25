@@ -95,7 +95,7 @@ public class PlayerSelection : MonoBehaviour {
 																				Search ("Selection").GetComponent<SpriteRenderer> ().sprite);
 				} else {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [Handler.GetComponent<SelectionController> ().AbleSelection.Count - 1];
-					PlayerPrefs.SetInt(playerNumber + " " + "Random Player", Mathf.FloorToInt(Random.Range (0, numberOfPlayers*10)/10));
+					Handler.GetComponent<SelectionController>().playersAreRandom.Add(gameObject);
 				}
 			}
 		} else if (isKeyboard && isSet && !ready) {
@@ -112,7 +112,7 @@ public class PlayerSelection : MonoBehaviour {
 																				Search ("Selection").GetComponent<SpriteRenderer> ().sprite);
 				} else {
 					Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [Handler.GetComponent<SelectionController> ().AbleSelection.Count - 1];
-					PlayerPrefs.SetInt(playerNumber + " " + "Random Player", Mathf.FloorToInt(Random.Range (0, numberOfPlayers*10)/10));
+					Handler.GetComponent<SelectionController>().playersAreRandom.Add(gameObject);
 				}
 			}
 		}
@@ -122,20 +122,30 @@ public class PlayerSelection : MonoBehaviour {
 		if (!isKeyboard && isSet && ready) {
 			if (XCI.GetButtonDown (XboxButton.B, Xcontroller)) {
 				ready = false;
-				Handler.GetComponent<SelectionController> ().SpriteAble (gameObject.GetComponent<SpriteRenderer> ().sprite,
-				                                                         Search ("Arrow").GetComponent<SpriteRenderer> ().sprite,
-				                                                         Search ("Selection").GetComponent<SpriteRenderer> ().sprite);
-				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [0];
 				PlayerPrefs.SetString (playerNumber, "none");
+				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [0];
+
+				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Player Random") {
+					Handler.GetComponent<SelectionController> ().SpriteAble (gameObject.GetComponent<SpriteRenderer> ().sprite,
+					                                                         Search ("Arrow").GetComponent<SpriteRenderer> ().sprite,
+					                                                         Search ("Selection").GetComponent<SpriteRenderer> ().sprite);
+				} else {
+					Handler.GetComponent<SelectionController>().playersAreRandom.Remove(gameObject);
+				}
 			}
 		} else if (isKeyboard && isSet && ready) {
 			if (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller)) {
 				ready = false;
-				Handler.GetComponent<SelectionController> ().SpriteAble (gameObject.GetComponent<SpriteRenderer> ().sprite,
-				                                                         Search ("Arrow").GetComponent<SpriteRenderer> ().sprite,
-				                                                         Search ("Selection").GetComponent<SpriteRenderer> ().sprite);
-				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [0];
 				PlayerPrefs.SetString (playerNumber, "none");
+				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [0];
+				
+				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Player Random") {
+					Handler.GetComponent<SelectionController> ().SpriteAble (gameObject.GetComponent<SpriteRenderer> ().sprite,
+					                                                         Search ("Arrow").GetComponent<SpriteRenderer> ().sprite,
+					                                                         Search ("Selection").GetComponent<SpriteRenderer> ().sprite);
+				} else {
+					Handler.GetComponent<SelectionController>().playersAreRandom.Remove(gameObject);
+				}
 			}
 		}
 	}

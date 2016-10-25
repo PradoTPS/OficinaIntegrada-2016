@@ -15,6 +15,8 @@ public class SelectionController : MonoBehaviour {
 	public List<Sprite> AbleSelection = new List<Sprite> ();
 	public List<Sprite> NotAbleSelection = new List<Sprite> ();
 
+	public List<GameObject> playersAreRandom = new List<GameObject>();
+
 	[HideInInspector]
 	public bool nobodyReady;
 	public GameObject[] selectables = new GameObject[4];
@@ -38,6 +40,7 @@ public class SelectionController : MonoBehaviour {
 		for (int i = 0; i < selectables.Length; i++) {
 			selectables [i] = GameObject.Find("Selectable" + (i + 1).ToString());
 			PlayerPrefs.SetString ("Player " + (i + 1).ToString (), "none");
+			PlayerPrefs.SetString ("Player " + (i + 1).ToString () + " " + "Player Random", "none");
 		}
 	}
 
@@ -151,6 +154,18 @@ public class SelectionController : MonoBehaviour {
 			if (selected == selectables [i]) {
 				pn = "Player " + (i + 1).ToString ();
 			}
+		}
+	}
+
+	public void SettingRandom(){
+		for (int i = 0; i < playersAreRandom.Count; i++) {
+			int randomNumber = Mathf.FloorToInt(Random.Range (0, (AblePlayers.Count - 1)*10)/10);
+			int randomOrder = int.Parse(AblePlayers[randomNumber].name.Substring (7));
+
+			NotAblePlayers.Add (AblePlayers[randomNumber]);
+			AblePlayers.Remove (AblePlayers[randomNumber]);
+
+			PlayerPrefs.SetInt(playersAreRandom[i].GetComponent<PlayerSelection>().playerNumber + " " + "Random Player", randomOrder);
 		}
 	}
 
