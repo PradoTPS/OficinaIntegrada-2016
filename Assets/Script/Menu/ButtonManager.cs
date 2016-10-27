@@ -15,13 +15,24 @@ public class ButtonManager : MonoBehaviour {
 
 	#region Methods
 	public void GoTo(){
-		SceneManager.LoadScene (nextScene);
+		if (XCI.GetButtonDown (XboxButton.A, XboxController.All)) { 
+			PlayerPrefs.SetInt ("PlayerController", 0);
+			SceneManager.LoadScene (nextScene);		
+		} else if (KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)){
+			PlayerPrefs.SetInt ("PlayerController", 1);
+			SceneManager.LoadScene (nextScene);
+		}
 	}
 
 	void Update(){
 		if (itsNotButton) {
-			if (XCI.GetButtonDown (XboxButton.A, XboxController.All) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)) {
+			if (XCI.GetButtonDown (XboxButton.A, XboxController.All)) { 
+				PlayerPrefs.SetInt ("PlayerController", 0);
 				GoTo ();
+			} else if (KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)){
+				PlayerPrefs.SetInt ("PlayerController", 1);
+				print (PlayerPrefs.GetInt ("PlayerController"));
+				GoTo ();		
 			}
 		}
 	}

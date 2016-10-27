@@ -24,8 +24,18 @@ public class InstructionBehaviour : MonoBehaviour {
 	void Start () {
 		instruction = "Hello! Welcome to Rumble Rumble! Why don't you try moving around a bit? Left and right so we can start!";
 		player = GameObject.Find ("Weed");
+		player.GetComponent<Player> ().isKeyboard = getControl ();
 		Xcontroller = player.GetComponent<Player> ().Xcontroller;
 		instructionLevel = 0;
+	}
+
+	bool getControl(){
+		int temp = PlayerPrefs.GetInt ("PlayerController");
+		if (PlayerPrefs.GetInt ("PlayerController") == 1) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	void verifyInstruction() {
@@ -129,7 +139,7 @@ public class InstructionBehaviour : MonoBehaviour {
 			enemyOn = true;
 		}
 
-		if ((Input.GetKeyDown(KeyCode.B) || XCI.GetButtonDown (XboxButton.B, Xcontroller)) && push) {
+		if ((Input.GetKeyDown(KeyCode.B) || XCI.GetButtonDown (XboxButton.X, Xcontroller)) && push) {
 			StartCoroutine ("timeToRumble");
 		} else if (!transform.FindChild("TutorialEnemy(Clone)")) {
 			StartCoroutine ("correctPush");
