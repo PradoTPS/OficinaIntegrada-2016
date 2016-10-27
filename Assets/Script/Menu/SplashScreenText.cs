@@ -17,5 +17,8 @@ public class SplashScreenText : MonoBehaviour {
 		} else {
 			TriggerTxt.text = "Press SPACE to continue";
 		}
+		for (int i = 0; i < 4; i++) {
+			PlayerPrefs.SetInt ("RoundWinner " + (i + 1).ToString(), 0);
+		}
 	}
 }

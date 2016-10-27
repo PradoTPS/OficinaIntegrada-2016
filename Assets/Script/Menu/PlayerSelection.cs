@@ -123,7 +123,6 @@ public class PlayerSelection : MonoBehaviour {
 			if (XCI.GetButtonDown (XboxButton.B, Xcontroller)) {
 				ready = false;
 				PlayerPrefs.SetString (playerNumber, "none");
-				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [0];
 
 				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Player Random") {
 					Handler.GetComponent<SelectionController> ().SpriteAble (gameObject.GetComponent<SpriteRenderer> ().sprite,
@@ -132,20 +131,23 @@ public class PlayerSelection : MonoBehaviour {
 				} else {
 					Handler.GetComponent<SelectionController>().playersAreRandom.Remove(gameObject);
 				}
+
+				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [0];
 			}
 		} else if (isKeyboard && isSet && ready) {
 			if (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller)) {
 				ready = false;
 				PlayerPrefs.SetString (playerNumber, "none");
-				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [0];
-				
+
 				if (gameObject.GetComponent<SpriteRenderer> ().sprite.name != "Player Random") {
 					Handler.GetComponent<SelectionController> ().SpriteAble (gameObject.GetComponent<SpriteRenderer> ().sprite,
 					                                                         Search ("Arrow").GetComponent<SpriteRenderer> ().sprite,
 					                                                         Search ("Selection").GetComponent<SpriteRenderer> ().sprite);
 				} else {
 					Handler.GetComponent<SelectionController>().playersAreRandom.Remove(gameObject);
-				}
+				}				
+
+				Search ("Selection").GetComponent<SpriteRenderer> ().sprite = Handler.GetComponent<SelectionController> ().AbleSelection [0];
 			}
 		}
 	}

@@ -53,9 +53,6 @@ public class GameHandler : MonoBehaviour {
 			PlayerPrefs.SetInt ("Round", 0);
 			PlayerPrefs.SetInt ("NumberOfRounds", 3);
 
-			for (int i = 0; i < 4; i++) {
-				PlayerPrefs.SetInt ("RoundWinner " + (i + 1).ToString(), 0);
-			}
 		}
 	}
 
