@@ -49,7 +49,7 @@ public class GameHandler : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("Round") <= PlayerPrefs.GetInt("NumberOfRounds")) {
 			SceneManager.LoadScene ("Game");
 		} else {
-			SceneManager.LoadScene ("SplashScreen");
+			SceneManager.LoadScene ("Result");
 			PlayerPrefs.SetInt ("Round", 0);
 			PlayerPrefs.SetInt ("NumberOfRounds", 3);
 

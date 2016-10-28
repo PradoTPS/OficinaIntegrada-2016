@@ -13,13 +13,16 @@ public class SetHud : MonoBehaviour {
 		for (int i = 0; i < playersHUD.Length; i++) {
 			playersHUD [i] = GameObject.Find ("Player" + (i + 1).ToString () + " " + "HUD");
 		}
+
 		SettingHUD ();
 	}
 
 	void SettingHUD(){
+		PlayerPrefs.SetInt ("numPlayers", 0);
 		for (int i = 0; i < playersHUD.Length; i++) {
 			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none" && PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "Player Random") {
 				DefineHUDImage (int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7)) - 1, i);
+				PlayerPrefs.SetInt ("numPlayers", PlayerPrefs.GetInt("numPlayers")+1);
 			} else if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) == "Player Random") {
 				DefineHUDImage (PlayerPrefs.GetInt("Player " + (i + 1).ToString() + " " + "Random Player"), i);
 			}
