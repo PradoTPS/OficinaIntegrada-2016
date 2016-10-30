@@ -30,7 +30,6 @@ public class InstructionBehaviour : MonoBehaviour {
 	}
 
 	bool getControl(){
-		int temp = PlayerPrefs.GetInt ("PlayerController");
 		if (PlayerPrefs.GetInt ("PlayerController") == 1) {
 			return true;
 		} else {

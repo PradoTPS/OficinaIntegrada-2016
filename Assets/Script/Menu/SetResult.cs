@@ -10,18 +10,23 @@ public class SetResult : MonoBehaviour {
 	public GameObject[] players;
 	public Image winnerImage;
 	public Text winnerText;
-
-	private int numPlayers;
+	public GameObject container;
 
 	private string winnerName;
+	private bool isSet;
+
+
 	#endregion
 
 	#region Methods
 	void Start () {
+		container.transform.position = new Vector2 ((400 - (PlayerPrefs.GetInt ("numPlayers") * 100)) / 45, 0);	
+		StartCoroutine (changeBoolInSec (isSet, 5));
+		isSet = false;
 		SettingPlayers ();
 	}
 
-	void SettingText(){
+	void SettingText() {
 		for (int i = 0; i < players.Length; i++) {
 			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none") {
 				Score [i].GetComponent<Text> ().text = PlayerPrefs.GetInt ("RoundWinner " + (i + 1).ToString ()).ToString ();
@@ -29,12 +34,14 @@ public class SetResult : MonoBehaviour {
 			}
 		}
 	}
-	void SettingPlayers(){
+
+	void SettingPlayers() {
 		for (int i = 0; i < PlayerPrefs.GetInt ("numPlayers"); i++) {
-			players[i] = GameObject.Find("Player" + (i+1).ToString() + " " + "HUD");
+			players[i] = GameObject.Find("Player" + ( i + 1 ).ToString() + " " + "HUD");
 		}
 	}
-	void SettingWinner(){
+
+	void SettingWinner() {
 		int highestScore = 0;
 		for (int i = 0; i < PlayerPrefs.GetInt ("numPlayers"); i++) {
 			if (highestScore == 0) {
@@ -48,12 +55,26 @@ public class SetResult : MonoBehaviour {
 			}
 		}
 		winnerText.text = winnerName + " is the Winner";
-
 	}
 
-	void Update(){
-		SettingText ();
-		SettingWinner ();
+	IEnumerator changeBoolInSec(bool boolean, int sec){
+		yield return new WaitForSeconds (sec);
+		isSet = true;
+	}
+
+	void randomNumbers( Text text) {
+		text.text = Random.Range (0, 99).ToString();
+	}
+				
+	void Update() {
+		if (isSet) {
+			SettingText ();
+			SettingWinner ();
+		} else {
+			for (int i = 0; i < PlayerPrefs.GetInt ("numPlayers"); i++) {
+				randomNumbers (players[i].GetComponentInChildren<Text>());			
+			}
+		} 
 	}
 	#endregion
 }
