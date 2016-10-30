@@ -71,11 +71,15 @@ public class CountingToGame : MonoBehaviour {
 			animate.GetComponent<Animator> ().enabled = true;
 
 			if (count == 3) {
-				Handler.GetComponent<SelectionController>().SettingRandom();
+				Handler.GetComponent<SelectionController> ().SettingRandom ();
 				PlayerPrefs.SetInt ("Round", 1);
-				PlayerPrefs.SetFloat ("Countdown", CountingReady());
+				PlayerPrefs.SetFloat ("Countdown", CountingReady ());
 				SceneManager.LoadScene ("MatchSettings");
 				count = 0;
+			} else if (count == 2) {
+				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [2].Play ();
+			} else {
+				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [3].Play ();
 			}
 
 			animate.GetComponent<Text> ().text = (int.Parse (animate.GetComponent<Text> ().text) - 1).ToString();

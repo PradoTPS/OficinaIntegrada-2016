@@ -14,22 +14,22 @@ public class AudioBehaviour : MonoBehaviour {
 
 	/*
 	Related to Player:
-	0 - AddScore
-	4 - Death
-	6 - Jump
-	8 - Punch
+	0 - AddScore -----> ok!
+	4 - Death -----> ok!
+	6 - Jump -----> ok!
+	8 - Punch -----> ok!
 	12 - Walk1
 	13 - Walk2
 	14 - Walk2
 
 	Related to UI:
 	1 - Back -----> ok!
-	5 - Deselecting
+	5 - Deselecting -----> ok!
 	7 - PressStart -----> ok!
 	9 - Selecting -----> ok!
 	11 - UI -----> ok!
-	2 - countdown finish 
-	3 - countdown start
+	2 - countdown finish -----> ok!
+	3 - countdown start -----> ok!
 
 	Related to Songs:
 	10 - ThemeSong -----> ok!
@@ -40,8 +40,6 @@ public class AudioBehaviour : MonoBehaviour {
 	void Awake () {
 		if (GameObject.FindGameObjectsWithTag ("Audio").Length == 2) {
 			Destroy (this.gameObject);
-		} else if (SceneManager.GetActiveScene ().name == "Result") {
-			playResult = true;
 		}
 		DontDestroyOnLoad (transform.gameObject);				
 	}
@@ -56,22 +54,7 @@ public class AudioBehaviour : MonoBehaviour {
 		}
 	}
 
-	void winTheme(){
-		if (!audios [15].isPlaying && SceneManager.GetActiveScene().name == "Result" && playResult) {
-			audios [15].Play ();
-			playResult = false;
-		}
-	}
-
-	void pressStart(){
-		if (SceneManager.GetActiveScene().name == "SplashScreen" && (XCI.GetButtonDown (XboxButton.A, XboxController.All) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second) ) ) {
-			audios [7].Play ();
-		}
-	}
-
 	void Update () {
 		loopTheme ();
-		winTheme ();
-		pressStart ();
 	}
 }

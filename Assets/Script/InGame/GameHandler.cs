@@ -42,6 +42,7 @@ public class GameHandler : MonoBehaviour {
 			winnerText.text = winnerName + " is the winner";
 			PlayerPrefs.SetInt ("Round", PlayerPrefs.GetInt ("Round") + 1);
 			PlayerPrefs.SetInt("RoundWinner " + alive[0].playerNumber.ToString(), PlayerPrefs.GetInt("RoundWinner " + alive[0].playerNumber) + 1);
+			GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [0].Play ();				
 		}
 			
 		yield return new WaitForSeconds (5f);

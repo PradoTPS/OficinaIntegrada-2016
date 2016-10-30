@@ -21,6 +21,7 @@ public class SetResult : MonoBehaviour {
 	#region Methods
 	void Start () {
 		container.transform.position = new Vector2 ((400 - (PlayerPrefs.GetInt ("numPlayers") * 100)) / 45, 0);	
+		GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [15].Play ();
 		StartCoroutine (changeBoolInSec (isSet, 5.65f));
 		isSet = false;
 		SettingPlayers ();

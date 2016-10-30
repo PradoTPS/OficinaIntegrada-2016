@@ -87,7 +87,11 @@ public class Player : MonoBehaviour {
 			count = 0;
 			gameCount = true;
 			animate.GetComponent<Animator> ().enabled = false;
-			StopCoroutine("gameCountdown");
+			StopAllCoroutines ();
+		} else if (count == 2) {
+			GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [2].Play ();				
+		} else {
+			GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [3].Play ();				
 		}
 		
 		animate.GetComponent<Text> ().text = (float.Parse (animate.GetComponent<Text> ().text) - ( 1f / PlayerPrefs.GetFloat ("Countdown"))).ToString();
@@ -167,6 +171,7 @@ public class Player : MonoBehaviour {
 		if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown(KeyboardButton.Jump, Kcontroller) && isKeyboard)) {
 			if ((XCI.GetButtonDown (XboxButton.A, Xcontroller) && !isKeyboard) || (KCI.GetButtonDown(KeyboardButton.Jump, Kcontroller) && isKeyboard)) {
 				if (wallSliding) {
+					GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [6].Play ();				
 					if (wallDirX == input.x) {
 						velocity.x = -wallDirX * wallJumpClimb.x;
 						velocity.y = wallJumpClimb.y;
@@ -181,9 +186,11 @@ public class Player : MonoBehaviour {
 
 				jumpButton = true;
 
+
 				if (controller.collisions.below) {
 					curState = "Air";
 					velocity.y = maxJumpVelocity;
+					GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [6].Play ();				
 				}
 			}
 		}
@@ -205,6 +212,8 @@ public class Player : MonoBehaviour {
 	}
 
 	void JumpOnEnemy(){
+		GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [4].Play ();
+
 		velocity.x = velocity.x * 1.5f;
 
 		velocity.y = maxJumpVelocity / 1.23f;
@@ -250,6 +259,7 @@ public class Player : MonoBehaviour {
 			}
 			final = inittial + distance;
 			lerpTarget = new Vector3 (final, enemyPlayer.position.y, enemyPlayer.position.z);
+			GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [8].Play ();
 		}
 
 		if (pushing) {
@@ -350,7 +360,6 @@ public class Player : MonoBehaviour {
 			otherVertical.gameObject.GetComponent<Player> ().curState = "Dead";
             Destroy(otherVertical.gameObject);
 			JumpOnEnemy();
-			print("Hey");
 		}
 	}
 
@@ -371,8 +380,6 @@ public class Player : MonoBehaviour {
 			AnimationHandling ();
         }
 
-		print(curState);
-		//Testing death stuff
         Limits(8, -9f, 9f);
 		Death ();
 	}

@@ -83,6 +83,7 @@ public class PlayerSelection : MonoBehaviour {
 	void Choosing(){
 		if (!isKeyboard && isSet && !ready) {
 			if (XCI.GetButtonDown (XboxButton.A, Xcontroller)) {
+				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [9].Play ();
 				ready = true;
 				PlayerPrefs.SetString (playerNumber, gameObject.GetComponent<SpriteRenderer> ().sprite.name);
 				GiveControll ();
@@ -100,6 +101,7 @@ public class PlayerSelection : MonoBehaviour {
 			}
 		} else if (isKeyboard && isSet && !ready) {
 			if (KCI.GetButtonDown (KeyboardButton.Jump, Kcontroller)) {
+				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [9].Play ();
 				ready = true;
 				PlayerPrefs.SetString (playerNumber, gameObject.GetComponent<SpriteRenderer> ().sprite.name);
 				GiveControll ();
@@ -121,6 +123,7 @@ public class PlayerSelection : MonoBehaviour {
 	void Unchoosing(){
 		if (!isKeyboard && isSet && ready) {
 			if (XCI.GetButtonDown (XboxButton.B, Xcontroller)) {
+				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [5].Play ();
 				ready = false;
 				PlayerPrefs.SetString (playerNumber, "none");
 
@@ -136,6 +139,7 @@ public class PlayerSelection : MonoBehaviour {
 			}
 		} else if (isKeyboard && isSet && ready) {
 			if (KCI.GetButtonDown (KeyboardButton.Action, Kcontroller)) {
+				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [5].Play ();
 				ready = false;
 				PlayerPrefs.SetString (playerNumber, "none");
 
