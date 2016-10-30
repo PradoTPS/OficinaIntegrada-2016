@@ -21,7 +21,7 @@ public class SetResult : MonoBehaviour {
 	#region Methods
 	void Start () {
 		container.transform.position = new Vector2 ((400 - (PlayerPrefs.GetInt ("numPlayers") * 100)) / 45, 0);	
-		StartCoroutine (changeBoolInSec (isSet, 5));
+		StartCoroutine (changeBoolInSec (isSet, 5.65f));
 		isSet = false;
 		SettingPlayers ();
 	}
@@ -57,7 +57,7 @@ public class SetResult : MonoBehaviour {
 		winnerText.text = winnerName + " is the Winner";
 	}
 
-	IEnumerator changeBoolInSec(bool boolean, int sec){
+	IEnumerator changeBoolInSec(bool boolean, float sec){
 		yield return new WaitForSeconds (sec);
 		isSet = true;
 	}
