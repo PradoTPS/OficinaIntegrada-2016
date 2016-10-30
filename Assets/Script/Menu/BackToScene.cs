@@ -14,9 +14,11 @@ public class BackToScene : MonoBehaviour {
 		if (XCI.GetButtonDown (XboxButton.B, XboxController.All) || KCI.GetButtonDown(KeyboardButton.Action, KeyboardController.First) || KCI.GetButtonDown(KeyboardButton.Action, KeyboardController.Second)) {
 			if (SceneManager.GetActiveScene ().name == "CharactersSelection") {
 				if (GameObject.Find ("SelectionHandler").GetComponent<SelectionController> ().nobodyReady){
+					GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour>().audios[1].Play();
 					SceneManager.LoadScene (sceneToGoBack);
 				}
 			} else {
+				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour>().audios[1].Play();
 				SceneManager.LoadScene (sceneToGoBack);
 			}
 		}

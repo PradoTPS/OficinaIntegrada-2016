@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
+using XboxCtrlrInput;
+using KeyboardInput;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -21,11 +23,11 @@ public class AudioBehaviour : MonoBehaviour {
 	14 - Walk2
 
 	Related to UI:
-	1 - Back
+	1 - Back -----> ok!
 	5 - Deselecting
-	7 - PressStart
-	9 - Selecting
-	11 - UI
+	7 - PressStart -----> ok!
+	9 - Selecting -----> ok!
+	11 - UI -----> ok!
 	2 - countdown finish 
 	3 - countdown start
 
@@ -61,8 +63,15 @@ public class AudioBehaviour : MonoBehaviour {
 		}
 	}
 
+	void pressStart(){
+		if (SceneManager.GetActiveScene().name == "SplashScreen" && (XCI.GetButtonDown (XboxButton.A, XboxController.All) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second) ) ) {
+			audios [7].Play ();
+		}
+	}
+
 	void Update () {
 		loopTheme ();
 		winTheme ();
+		pressStart ();
 	}
 }
