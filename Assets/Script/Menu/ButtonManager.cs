@@ -28,14 +28,14 @@ public class ButtonManager : MonoBehaviour, ISelectHandler {
 		if (XCI.GetButtonDown (XboxButton.A, XboxController.All)) { 
 			PlayerPrefs.SetInt ("PlayerController", 0);
 			SceneManager.LoadScene (nextScene);
-		} else if (KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)){
+		} 
+		if (KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)){
 			PlayerPrefs.SetInt ("PlayerController", 1);
 			SceneManager.LoadScene (nextScene);
 		}
 	}
 		
-	public void OnSelect(BaseEventData eventData)
-	{
+	public void OnSelect(BaseEventData eventData) {
 		if (hasSounded) {
 			GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour>().audios[11].Play();		
 		}
@@ -46,7 +46,8 @@ public class ButtonManager : MonoBehaviour, ISelectHandler {
 			if (XCI.GetButtonDown (XboxButton.A, XboxController.All)) { 
 				PlayerPrefs.SetInt ("PlayerController", 0);
 				GoTo ();
-			} else if (KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)){
+			} 
+			if (KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)){
 				PlayerPrefs.SetInt ("PlayerController", 1);
 				print (PlayerPrefs.GetInt ("PlayerController"));
 				GoTo ();		

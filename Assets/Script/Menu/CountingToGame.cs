@@ -20,7 +20,10 @@ public class CountingToGame : MonoBehaviour {
 	void Awake(){
 		for (int i = 0; i < selectables.Length; i++) {
 			selectables [i] = GameObject.Find("Selectable" + (i + 1).ToString());
+			PlayerPrefs.DeleteKey ("RoundWinner " + (i + 1).ToString ());
 		}
+
+
 
 		animate = GameObject.Find ("Countdown");
 	}

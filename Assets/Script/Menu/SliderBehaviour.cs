@@ -14,7 +14,7 @@ public class SliderBehaviour : MonoBehaviour {
 
 	void Awake() {
 
-		if (PlayerPrefs.HasKey ("SoundValue") && PlayerPrefs.HasKey ("LightValue")) {
+		if (PlayerPrefs.HasKey ("SoundValue")) {
 			soundSlider.GetComponent<Slider> ().value = PlayerPrefs.GetFloat ("SoundValue");
 		} else {	
 			soundSlider.GetComponent<Slider> ().value = 1;
