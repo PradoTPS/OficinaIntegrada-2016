@@ -49,7 +49,6 @@ public class ButtonManager : MonoBehaviour, ISelectHandler {
 			} 
 			if (KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)){
 				PlayerPrefs.SetInt ("PlayerController", 1);
-				print (PlayerPrefs.GetInt ("PlayerController"));
 				GoTo ();		
 			}
 		}

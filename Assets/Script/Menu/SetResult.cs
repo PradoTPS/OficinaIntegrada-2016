@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,9 +7,11 @@ public class SetResult : MonoBehaviour {
 	#region Properties
 	public GameObject[] Score = new GameObject[4];
 	public GameObject[] players;
-	public Image winnerImage;
-	public Text winnerText;
 	public GameObject container;
+
+	public Image winnerImage;
+	public Sprite drawImage;
+	public Text winnerText;
 
 	private string winnerName;
 	private bool isSet;
@@ -49,13 +50,20 @@ public class SetResult : MonoBehaviour {
 				highestScore = int.Parse (Score [i].GetComponent<Text> ().text);
 				winnerName = players [i].GetComponent<Image> ().sprite.name;
 				winnerImage.sprite = players [i].GetComponent<Image> ().sprite;
+				winnerText.text = winnerName + " is the Winner";
 			} else if (highestScore < int.Parse (Score [i].GetComponent<Text> ().text)) {
 				highestScore = int.Parse (Score [i].GetComponent<Text> ().text);
 				winnerName = players [i].GetComponent<Image> ().sprite.name;
 				winnerImage.sprite = players [i].GetComponent<Image> ().sprite;
+				winnerText.text = winnerName + " is the Winner";
+			} else if (highestScore == int.Parse (Score [i].GetComponent<Text> ().text)) {
+				highestScore = int.Parse (Score [i].GetComponent<Text> ().text);
+				winnerName = players [i].GetComponent<Image> ().sprite.name;
+				winnerImage.sprite = players [i].GetComponent<Image> ().sprite;
+				winnerImage.sprite = drawImage;
+				winnerText.text = "Ohhh! It's a draw!";
 			}
 		}
-		winnerText.text = winnerName + " is the Winner";
 	}
 
 	IEnumerator changeBoolInSec(bool boolean, float sec){
@@ -75,7 +83,7 @@ public class SetResult : MonoBehaviour {
 			for (int i = 0; i < PlayerPrefs.GetInt ("numPlayers"); i++) {
 				randomNumbers (players[i].GetComponentInChildren<Text>());			
 			}
-		} 
+		}
 	}
 	#endregion
 }

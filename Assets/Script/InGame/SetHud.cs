@@ -25,6 +25,7 @@ public class SetHud : MonoBehaviour {
 				PlayerPrefs.SetInt ("numPlayers", PlayerPrefs.GetInt("numPlayers") + 1);
 			} else if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) == "Player Random") {
 				DefineHUDImage (PlayerPrefs.GetInt("Player " + (i + 1).ToString() + " " + "Random Player"), i);
+				PlayerPrefs.SetInt ("numPlayers", PlayerPrefs.GetInt("numPlayers") + 1);
 			}
 		}
 	}
