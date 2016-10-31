@@ -307,9 +307,11 @@ public class Player : MonoBehaviour {
 		if (this.input.x != 0) {
 			this.transform.localScale = new Vector3 (input.x, 1, 1);
 			this.lastDir = input.x;
+			anim.SetBool("Moving" , true);
 		} else {
 			this.transform.localScale = new Vector3 (this.lastDir, 1, 1);
 			curState = "Idle";
+			anim.SetBool("Moving", false);
 		}
 		#endregion
 	}
