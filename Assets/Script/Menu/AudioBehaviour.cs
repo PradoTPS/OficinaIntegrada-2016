@@ -41,7 +41,9 @@ public class AudioBehaviour : MonoBehaviour {
 		if (GameObject.FindGameObjectsWithTag ("Audio").Length == 2) {
 			Destroy (this.gameObject);
 		}
-		DontDestroyOnLoad (transform.gameObject);				
+		DontDestroyOnLoad (transform.gameObject);
+
+		audios [4].volume = 1;
 	}
 
 	void loopTheme(){
