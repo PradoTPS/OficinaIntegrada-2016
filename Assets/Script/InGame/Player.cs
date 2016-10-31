@@ -57,6 +57,8 @@ public class Player : MonoBehaviour {
 
 	public float upSpeed;
 
+	private AudioSource sounded;
+
 	public string curState;
 	public bool onWall;
 	public float lastDir = 1;
@@ -79,6 +81,7 @@ public class Player : MonoBehaviour {
 			gameCount = true;
 		}
 
+		sounded = GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [Random.Range(12, 14)];
 		curState = "Idle";
 	}
 
@@ -126,6 +129,15 @@ public class Player : MonoBehaviour {
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
+	}
+
+	IEnumerator walkSound(){
+		yield return new WaitForSeconds (0.5f);
+		if (!sounded.isPlaying) {
+			sounded = GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [Random.Range(12, 14)];
+			sounded.Play ();
+		}
+		StopCoroutine ("walkSound");
 	}
 
 	void Walk(){
@@ -308,6 +320,7 @@ public class Player : MonoBehaviour {
 			this.transform.localScale = new Vector3 (input.x, 1, 1);
 			this.lastDir = input.x;
 			anim.SetBool("Moving" , true);
+			StartCoroutine("walkSound");
 		} else {
 			this.transform.localScale = new Vector3 (this.lastDir, 1, 1);
 			curState = "Idle";

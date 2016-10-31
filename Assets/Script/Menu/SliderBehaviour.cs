@@ -9,7 +9,6 @@ public class SliderBehaviour : MonoBehaviour {
 
 
 	public GameObject soundSlider;
-	public GameObject lightSlider;
 
 	private string setSlider;
 
@@ -17,10 +16,8 @@ public class SliderBehaviour : MonoBehaviour {
 
 		if (PlayerPrefs.HasKey ("SoundValue") && PlayerPrefs.HasKey ("LightValue")) {
 			soundSlider.GetComponent<Slider> ().value = PlayerPrefs.GetFloat ("SoundValue");
-			lightSlider.GetComponent<Slider> ().value = PlayerPrefs.GetFloat ("LightValue");
 		} else {	
 			soundSlider.GetComponent<Slider> ().value = 1;
-			lightSlider.GetComponent<Slider> ().value = 1;
 		}
 	}
 
@@ -32,10 +29,6 @@ public class SliderBehaviour : MonoBehaviour {
 		float keyboard = Input.GetAxisRaw ("SliderV");
 		float Xbox = XCI.GetAxisRaw (XboxAxis.LeftStickY);
 
-		if (keyboard == -1 || Xbox == -1) {
-			Setting("light");
-		}
-
 		if (keyboard == 1 || Xbox == 1) {
 			Setting("sound");
 		}
@@ -43,11 +36,6 @@ public class SliderBehaviour : MonoBehaviour {
 	}
 
 	void Setting(string position){
-
-		if (position == "light") {
-			transform.position = new Vector3(0, -2.1f, 0);
-			setSlider = position;
-		}
 
 		if (position == "sound") {
 			transform.position = new Vector3(0, 0, 0);
@@ -59,11 +47,6 @@ public class SliderBehaviour : MonoBehaviour {
 	void setValue(){
 		float keyboard = Input.GetAxisRaw ("SliderH") * 0.01f;
 		float Xbox = XCI.GetAxisRaw (XboxAxis.LeftStickX) * 0.01f;
-		
-		if (setSlider == "light") {			
-			lightSlider.GetComponent<Slider>().value += (keyboard + Xbox);
-			PlayerPrefs.SetFloat("LightValue", lightSlider.GetComponent<Slider>().value);
-		}
 		
 		if (setSlider == "sound") {
 			soundSlider.GetComponent<Slider>().value += (keyboard + Xbox);
