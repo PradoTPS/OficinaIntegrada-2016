@@ -383,5 +383,6 @@ public class Player : MonoBehaviour {
         Limits(8, -9f, 9f);
 		Death ();
 	}
+
 	#endregion
 } 
