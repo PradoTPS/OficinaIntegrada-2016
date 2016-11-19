@@ -18,21 +18,21 @@ public class ButtonManager : MonoBehaviour, ISelectHandler {
 
 	#region Methods
 	public void GoTo(){
-
 		if (SceneManager.GetActiveScene ().name == "SplashScreen") {
 			GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [7].Play ();
 		} else {
 			GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [9].Play ();
 		}
 
-		if (XCI.GetButtonDown (XboxButton.A, XboxController.All)) { 
+		if (XCI.GetButtonDown (XboxButton.A, XboxController.First)) { 
 			PlayerPrefs.SetInt ("PlayerController", 0);
-			SceneManager.LoadScene (nextScene);
-		} 
-		if (KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First) || KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.Second)){
-			PlayerPrefs.SetInt ("PlayerController", 1);
-			SceneManager.LoadScene (nextScene);
 		}
+
+		if (KCI.GetButtonDown (KeyboardButton.Jump, KeyboardController.First)){
+			PlayerPrefs.SetInt ("PlayerController", 1);
+		}
+
+		SceneManager.LoadScene (nextScene);
 	}
 		
 	public void OnSelect(BaseEventData eventData) {
@@ -43,7 +43,7 @@ public class ButtonManager : MonoBehaviour, ISelectHandler {
 
 	void Update(){
 		if (itsNotButton) {
-			if (XCI.GetButtonDown (XboxButton.A, XboxController.All)) { 
+			if (XCI.GetButtonDown (XboxButton.A)) { 
 				PlayerPrefs.SetInt ("PlayerController", 0);
 				GoTo ();
 			} 

@@ -159,13 +159,14 @@ public class SelectionController : MonoBehaviour {
 
 	public void SettingRandom(){
 		for (int i = 0; i < playersAreRandom.Count; i++) {
-			int randomNumber = Mathf.FloorToInt(Random.Range (1, (AblePlayers.Count - 2)*10)/10);
+			int randomNumber = Mathf.FloorToInt(Random.Range (0, (AblePlayers.Count - 1)*10)/10);
 			int randomOrder = int.Parse(AblePlayers[randomNumber].name.Substring (7));
 
 			NotAblePlayers.Add (AblePlayers[randomNumber]);
 			AblePlayers.Remove (AblePlayers[randomNumber]);
 
 			PlayerPrefs.SetInt(playersAreRandom[i].GetComponent<PlayerSelection>().playerNumber + " " + "Random Player", randomOrder);
+			print (randomOrder);
 		}
 	}
 

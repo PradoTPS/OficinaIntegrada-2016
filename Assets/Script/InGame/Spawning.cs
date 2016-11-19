@@ -23,7 +23,7 @@ public class Spawning : MonoBehaviour {
 			if (PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "none" && PlayerPrefs.GetString ("Player " + (i + 1).ToString ()) != "Player Random") {
 
 				GameObject instance = new GameObject();
-				InstantiatePlayer (ref instance, (int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7)) - 1), i);
+				InstantiatePlayer (ref instance, (int.Parse(PlayerPrefs.GetString ("Player " + (i + 1).ToString ()).Substring (7))), i);
 				SetControll ("Player " + (i + 1).ToString (), instance);
 				SetCollisionMask("Player " + (i + 1).ToString (), instance);
 

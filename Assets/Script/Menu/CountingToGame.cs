@@ -23,8 +23,6 @@ public class CountingToGame : MonoBehaviour {
 			PlayerPrefs.DeleteKey ("RoundWinner " + (i + 1).ToString ());
 		}
 
-
-
 		animate = GameObject.Find ("Countdown");
 	}
 
@@ -77,7 +75,7 @@ public class CountingToGame : MonoBehaviour {
 				Handler.GetComponent<SelectionController> ().SettingRandom ();
 				PlayerPrefs.SetInt ("Round", 1);
 				PlayerPrefs.SetFloat ("Countdown", CountingReady ());
-				SceneManager.LoadScene ("MatchSettings");
+				SceneManager.LoadScene ("Game");
 				count = 0;
 			} else if (count == 2) {
 				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [2].Play ();
