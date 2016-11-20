@@ -25,7 +25,7 @@ public class AudioBehaviour : MonoBehaviour {
 			audios [10].Play ();
 		}
 
-		if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Result") {			
+		if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Result" || SceneManager.GetActiveScene().name == "AnimTest" || SceneManager.GetActiveScene().name == "Testing") {			
 			audios [10].Stop ();
 		}
 

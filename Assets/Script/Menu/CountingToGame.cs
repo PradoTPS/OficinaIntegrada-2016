@@ -75,7 +75,8 @@ public class CountingToGame : MonoBehaviour {
 				Handler.GetComponent<SelectionController> ().SettingRandom ();
 				PlayerPrefs.SetInt ("Round", 1);
 				PlayerPrefs.SetFloat ("Countdown", CountingReady ());
-				SceneManager.LoadScene ("Game");
+				PlayerPrefs.SetString("Scene to Load", "Game");
+				SceneManager.LoadScene ("Loading");
 				count = 0;
 			} else if (count == 2) {
 				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [2].Play ();

@@ -31,13 +31,13 @@ public class ButtonSettingManager : MonoBehaviour {
 
 	public void SettingChange(){
 		if (canUseAxis) {
-			if ((XCI.GetAxisRaw (XboxAxis.LeftStickX, XboxController.All) == 1 || KCI.GetAxisRaw (KeyboardAxis.Horizontal, KeyboardController.First) == 1 || KCI.GetAxisRaw (KeyboardAxis.Horizontal, KeyboardController.Second) == 1) && numberRound < maxValue) {
+			if ((XCI.GetAxisRaw (XboxAxis.LeftStickX, XboxController.First) == 1 || KCI.GetAxisRaw (KeyboardAxis.Horizontal, KeyboardController.First) == 1) && numberRound < maxValue) {
 				canUseAxis = false;
 				numberRound++;
 				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [5].Play ();
 				SettingText ();	
 			}
-			if ((XCI.GetAxisRaw (XboxAxis.LeftStickX, XboxController.All) == -1 || KCI.GetAxisRaw (KeyboardAxis.Horizontal, KeyboardController.First) == -1 || KCI.GetAxisRaw (KeyboardAxis.Horizontal, KeyboardController.Second) == -1) && numberRound > minValue) {
+			if ((XCI.GetAxisRaw (XboxAxis.LeftStickX, XboxController.All) == -1 || KCI.GetAxisRaw (KeyboardAxis.Horizontal, KeyboardController.First) == -1) && numberRound > minValue) {
 				canUseAxis = false;
 				numberRound--;
 				GameObject.Find ("AudioHandler").GetComponent<AudioBehaviour> ().audios [5].Play ();
@@ -45,7 +45,7 @@ public class ButtonSettingManager : MonoBehaviour {
 			}
 		}
 
-		if (XCI.GetAxisRaw (XboxAxis.LeftStickX, XboxController.All) == 0 && KCI.GetAxisRaw (KeyboardAxis.Horizontal, KeyboardController.First) == 0 && KCI.GetAxisRaw (KeyboardAxis.Horizontal, KeyboardController.Second) == 0) {
+		if (XCI.GetAxisRaw (XboxAxis.LeftStickX, XboxController.First) == 0 && KCI.GetAxisRaw (KeyboardAxis.Horizontal, KeyboardController.First) == 0) {
 			canUseAxis = true;
 		}
 	}
