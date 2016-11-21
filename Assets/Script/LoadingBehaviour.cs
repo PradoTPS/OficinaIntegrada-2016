@@ -4,18 +4,18 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class LoadingBehaviour : MonoBehaviour {
-	#region Methods
+	#region Properties
 	public Text loadText;
 	#endregion
 
 	#region Methods
 	void Start(){
 		StartCoroutine("LoadAnim");
-		SceneManager.LoadScene (PlayerPrefs.GetString("Scene to Load"));
+		SceneManager.LoadSceneAsync (PlayerPrefs.GetString("Scene to Load"));
 	}
 
 	IEnumerator LoadAnim(){
-		yield return new WaitForSeconds (0.4f);
+		yield return new WaitForSeconds (0.2f);
 		loadText.GetComponent<Text> ().text += ".";
 
 		if (loadText.GetComponent<Text> ().text != "Loading....") {
